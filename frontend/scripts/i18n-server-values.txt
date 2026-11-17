@@ -1,0 +1,171 @@
+# Readable forms of status/type codes the server sends, shown via readable()/words().
+# Collected from distinct values of enum-like columns in the live company_brain database.
+Accepted
+Accreditation standard
+Achievement
+Active
+Added
+Affects
+All
+Amendment ref
+Analysed
+Annually
+Applicability
+Applicable
+Approval
+At the time of
+Audit
+Baseline
+Baseline captured
+Changed
+Commitment
+Company
+Compliant
+Conditional
+Connected
+Control
+Core
+Corrective
+Covers
+Critical
+Cybersecurity
+Daily
+Data retention
+Deadline
+Definition
+Detective
+Deterministic modal-verb rule
+Disclosure
+Discovered
+Discovery
+Documentation
+Documented in
+Done
+Downloaded
+Draft
+Duty
+Enforcement
+Every completed year
+Every financial year
+Every three years
+Evidence
+Evidence missing
+Excellence
+Except in
+Except where
+Exception
+Exemption
+Expiring
+Explanatory
+Extracted
+Facility safety
+Failed
+Failed fetch
+Fetch failed
+Fixed fine
+Frequency
+Gap
+Governance
+Governed by
+Half yearly
+High
+Immediate on issue
+Implements
+Imprisonment
+In case of
+In case where
+Infection control
+Info
+Insufficient evidence
+Licensing
+Life support
+Low
+Mapped
+May
+May not
+Medication
+Medium
+Met
+Mitigates
+Modified
+Monitoring
+Monthly
+Multiplier of sum
+Must
+Must not
+Nabh achievement
+Nabh commitment
+Nabh core
+Nabh excellence
+Needs review
+New
+No expiry
+No history
+Non compliant
+Non critical
+Normalized text
+Not applicable
+Not assessed
+Not covered
+Not stated
+Notification
+Numbering only
+Obligation
+Ocr required
+One version only
+Open
+Operational
+Owner impact
+Parsing
+Partial
+Partially compliant
+Partially covers
+Pending review
+Per day
+Periodically
+Permission
+Permitted
+Policy
+Preventive
+Prohibited
+Proposed
+Proves
+Provided that
+Quarantined
+Quarterly
+Ready
+Record keeping
+Registration
+Regulation
+Removed
+Reporting
+Required
+Review required
+Risk
+Risk management
+Scope
+Shall
+Shall not
+Should
+Source changed
+State
+Stated date
+Structured
+Subject to
+Suspension cancellation
+Training
+Unchanged
+Under maintenance
+Unless
+Unquantified
+Unreachable
+Unreadable
+Unresolved
+Unreviewed
+Url resolved
+Url unresolved
+Valid
+Weekly
+When
+Where
+Wording

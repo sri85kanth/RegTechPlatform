@@ -1,0 +1,11 @@
+[Unit]
+Description=Company Brain morning ops digest
+
+[Service]
+Type=oneshot
+User=brain
+Group=brain
+WorkingDirectory=/srv/company-brain/scraper
+EnvironmentFile=/etc/company-brain/env
+Environment=PYTHONPATH=/srv/company-brain/scraper
+ExecStart=/srv/company-brain/.venv/bin/python -m regulatory_ingestion.opscheck daily

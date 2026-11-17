@@ -1,0 +1,42 @@
+# RegTechPlatform — files that must never be committed.
+# frontend/.gitignore and backend/.gitignore add their own rules on top.
+
+# dependencies and build output
+node_modules/
+dist/
+dist-ssr/
+
+# secrets and local-only files
+.env
+.env.*
+!.env.example
+*.local
+*.pem
+*.key
+backend/scraper/.config-key
+backend/deploy/langfuse/.env*
+
+# backend data, models and logs
+backend/scraper/output/
+backend/scraper/data/
+backend/scraper/input/
+backend/scraper/models/
+backend/scraper/checkpoints/
+*.log
+
+# python
+__pycache__/
+.pytest_cache/
+*.pyc
+.venv/
+
+# not part of the app
+frontend/.retired/
+frontend/public/data/
+
+# editors, OS and tools
+.DS_Store
+.claude/
+.idea/
+.vscode/
+npm-debug.log*

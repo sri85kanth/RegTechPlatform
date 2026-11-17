@@ -1,0 +1,991 @@
+{
+ "seed": 20260904,
+ "built_at": "2026-09-05T02:49:11",
+ "note": "Derived pairs, plus hand-written threshold questions. The threshold_written cases reuse gold rows from the templated threshold cases, so the two kinds isolate query phrasing from retrieval capability. See rag_eval.py docstring.",
+ "cases": [
+  {
+   "kind": "requirement",
+   "query": "‘Time Liabilities’ of a bank shall include those liabilities which are payable otherwise than on demand and shall include the following:",
+   "gold_prefix": "rbi-md-13005-obl-009#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "The IO / Dy. IO shall record a “reasoned decision” in each case.",
+   "gold_prefix": "rbi-md-13272-obl-041#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "For the basic services rendered to individuals, an R RB shall levy charges only if the charges are just and supported by reason.",
+   "gold_prefix": "rbi-md-13039-obl-150#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "definition",
+   "query": "What does \"Competent Authority\" mean?",
+   "gold_prefix": "rbi-md-13271-s003#",
+   "gold_table": "sections"
+  },
+  {
+   "kind": "requirement",
+   "query": "The rate of interest as applicable to FCNR(B) deposits shall continue.",
+   "gold_prefix": "rbi-md-13157-obl-069#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "A matched position in a future or forward and its corresponding underlying shall also be fully offset (the leg representing the time to expiry of the future shall however be reported) and thus excluded from the calculation.",
+   "gold_prefix": "rbi-md-13080-obl-116#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "Classification in the balance sheet The amount raised by way of issue of debt capital instrument shall be classified under ‘Schedule 4 – Borrowings’ in the Balance Sheet;",
+   "gold_prefix": "rbi-md-13159-obl-051#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "Grant of advances against bonds An LAB shall not grant advances against the security of its own bonds.",
+   "gold_prefix": "rbi-md-13080-obl-043#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "AFS – Reserve shall be as per the Reserve Bank of India (Commercial Banks – Classification, Valuation and Operation of Investment Portfolio) Directions, 2025; and 21",
+   "gold_prefix": "rbi-md-13159-obl-036#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "The Board shall review the operation of doorstep banking facility on a half- yearly basis, during the first year of its operation and subsequently on an annual basis. A. Opening of Banking Outlets A.1 General Conditions",
+   "gold_prefix": "rbi-md-13102-obl-011#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "threshold",
+   "query": "What is the amount limit of 15000000 INR?",
+   "gold_prefix": "cbic-6134bf6f46-obl-002#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "definition",
+   "query": "What does \"Originating Access Provider\" mean?",
+   "gold_prefix": "trai-a22679e0c0-s001#",
+   "gold_table": "sections"
+  },
+  {
+   "kind": "requirement",
+   "query": "10 per cent of net assets of CIC shall include real estate or other fixed assets which are required for its effective functioning but shall not include other financial investments/loans in non-group companies.",
+   "gold_prefix": "rbi-md-12937-obl-003#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "The designated official shall issue the show cause notice and serve written order on behalf of the Identification Committee and Review Committee respectively.",
+   "gold_prefix": "rbi-md-13017-obl-018#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "definition",
+   "query": "What does \"Grievance\" mean?",
+   "gold_prefix": "irdai-a09e3fe8aa-s063#",
+   "gold_table": "sections"
+  },
+  {
+   "kind": "threshold",
+   "query": "What is the percentage limit of 9 %?",
+   "gold_prefix": "rbi-md-13080-obl-126#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "threshold",
+   "query": "What is the percentage limit of 1.25 %?",
+   "gold_prefix": "rbi-md-13004-obl-074#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "Total NDTL for the purpose of SLR under Section 24 (2A) of Banking Regulation Act, 1949, shall b e computed on t he similar procedure as followed for CRR.",
+   "gold_prefix": "rbi-md-13031-obl-042#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "The restrictions on further financial accommodation to wilful defaulters and provisions regarding large defaulters contained in these Directions, shall apply to all entities regulated by the Reserve Bank, irrespective of whether they fall within the definition of ‘lender’ as provided in these Directions or not.",
+   "gold_prefix": "rbi-md-13042-obl-003#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "in case of work area mentioned at (5) above, where other financial sector regulators have prescribed any certifications, these shall be complied with. 30",
+   "gold_prefix": "rbi-md-13136-obl-104#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": ". A bank shall also ensure that the broker note contains the exact time of the deal and the name of the counterparty. A bank’s back-office shall ensure that the deal time on the broker note and the deal ticket is the same. A bank shall also ensure that concurrent auditors audit this aspect.",
+   "gold_prefix": "rbi-md-13094-obl-200#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "“director” shall mean the director of a company which was classified as a large defaulter / wilful defaulter and who was associated with the company at the time when the acts of omission or commission by the company / its directors led to the default. 4",
+   "gold_prefix": "rbi-md-13042-obl-079#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "A bank shall submit at monthly intervals, information in Annex II to all credit information companies in respect of the wilful defaulters:",
+   "gold_prefix": "rbi-md-13112-obl-038#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "threshold",
+   "query": "What is the amount limit of 10000000 INR?",
+   "gold_prefix": "rbi-md-13039-obl-246#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "A bank shall not enter into DLG arrangements for revolving credit facilities offered through digital lending channel and credit cards as defined under the Reserve Bank of India (Small Finance Banks – Credit Cards and Debit Cards: Issuance and Conduct) Directions, 2025.",
+   "gold_prefix": "rbi-md-13124-obl-073#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "threshold",
+   "query": "What is the percentage limit of 25 %?",
+   "gold_prefix": "rbi-md-13111-obl-102#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "threshold",
+   "query": "What is the percentage limit of 10 %?",
+   "gold_prefix": "rbi-md-13159-obl-197#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "The complainant shall be advised by the CI / CIC of the action taken on the complaint in all cases, including the cases where the complaint has been rejected. In cases of rejection, the reasons for rejection shall also be provided 22 by CI and CIC.",
+   "gold_prefix": "rbi-md-12955-obl-074#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "The Basel III leverage ratio framework shall follow the same scope of regulatory consolidation as is used for the risk-based capital framework.",
+   "gold_prefix": "rbi-md-13159-obl-637#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "In case of any doubt arising on account of identical names, the AIFI shall use independent sources for confirmation of the identity of directors rather than seeking a declaration from the borrowing company.",
+   "gold_prefix": "rbi-md-12971-obl-063#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "No order for payment of any amount by way of financial disincentive shall be made by the Authority unless the service provider has been given a reasonable opportunity of representing against the contravention of the regulations observed by the Authority.",
+   "gold_prefix": "trai-76464f2d55-obl-015#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "threshold",
+   "query": "What is the percentage limit of 50 %?",
+   "gold_prefix": "rbi-md-13159-obl-181#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "threshold",
+   "query": "What is the amount limit of 150000000000 INR?",
+   "gold_prefix": "rbi-md-13630-obl-021#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "The retirement of the share capital contributed by an RCB to the shares of any society shall be completed in 10 equal annual instalments commencing from the financial year immediately following the year in which the concern commences business or production. 22",
+   "gold_prefix": "rbi-md-12995-obl-104#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "definition",
+   "query": "What does \"Nodal Officer\" mean?",
+   "gold_prefix": "trai-da70f12052-s030#",
+   "gold_table": "sections"
+  },
+  {
+   "kind": "requirement",
+   "query": "Accounts where interest and / or instalment of principal is overdue Explanation: Accounts with change only in days past due from the last reporting reference date shall also form part of the reporting.",
+   "gold_prefix": "rbi-md-13051-obl-016#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "definition",
+   "query": "What does \"Call Money\" mean?",
+   "gold_prefix": "rbi-md-12061-s002#",
+   "gold_table": "sections"
+  },
+  {
+   "kind": "definition",
+   "query": "What does \"Internal Ombudsman (IO)\" mean?",
+   "gold_prefix": "rbi-md-13273-s003#",
+   "gold_table": "sections"
+  },
+  {
+   "kind": "requirement",
+   "query": "In terms of provision of Rule 9(1A) of the PML Rules, the bank shall capture customer’s KYC records and upload onto CKYCR within 10 days of commencement of an account-based relationship with the customer.",
+   "gold_prefix": "rbi-md-13141-obl-172#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "threshold",
+   "query": "What is the percentage limit of 10 %?",
+   "gold_prefix": "trai-724428b40f-obl-050#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "threshold",
+   "query": "What is the percentage limit of 50 %?",
+   "gold_prefix": "rbi-md-12957-obl-185#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "threshold",
+   "query": "What is the amount limit of 5000000000 INR?",
+   "gold_prefix": "rbi-md-12961-obl-058#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "threshold",
+   "query": "What is the percentage limit of 25 %?",
+   "gold_prefix": "rbi-md-13092-obl-095#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "CDMs / BNAMs shall not return any note which is suspect / counterfeit to the customer.",
+   "gold_prefix": "rbi-md-13164-obl-058#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "An RRB shall confine retailing of units of Mutual Funds to branches.",
+   "gold_prefix": "rbi-md-13058-obl-019#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "The HSMs shall have logging enabled and the logs must themselves be tamper proof.",
+   "gold_prefix": "rbi-md-13633-obl-127#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "A prospective transferee interested in acquiring a specific stressed loan may offer a bid to the bank(s), which shall be termed as the base-bid.",
+   "gold_prefix": "rbi-md-13151-obl-122#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "in respect of which the subscriber (all types, pre -paid as well as post-paid) has to be registered and authenticated at the network point of registration and approved numbering plan shall be applicable;",
+   "gold_prefix": "trai-84ff7e3d6e-obl-014#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "To calculate CCR exposure amounts associated with derivative exposure, a bank shall use the CEM.",
+   "gold_prefix": "rbi-md-13127-obl-466#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "threshold",
+   "query": "What is the percentage limit of 100 %?",
+   "gold_prefix": "rbi-md-13115-obl-356#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "definition",
+   "query": "What does \"Proposal form\" mean?",
+   "gold_prefix": "irdai-a09e3fe8aa-s063#",
+   "gold_table": "sections"
+  },
+  {
+   "kind": "requirement",
+   "query": "Any SRs outstanding after the final settlement of the government guarantee or the expiry of the guarantee period, whichever is earlier, shall be valued at ₹1.",
+   "gold_prefix": "rbi-md-12977-obl-106#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "The designated officer shall ensure that genuine grievances of customers are redressed promptly without any delay. It shall be clearly indicated that HFC Grievance Redressal Machinery will also deal with the issue relating to services provided by the outsourced agency.",
+   "gold_prefix": "rbi-md-12939-obl-236#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "threshold",
+   "query": "What is the amount limit of 28 INR?",
+   "gold_prefix": "rbi-md-12995-obl-147#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "definition",
+   "query": "What does \"IPTV service\" mean?",
+   "gold_prefix": "trai-16ea2509b8-s001#",
+   "gold_table": "sections"
+  },
+  {
+   "kind": "requirement",
+   "query": "In case the overdues arising from forward contracts and plain vanilla swaps and options become NPAs, all other funded facilities granted to the client shall also be classified as NPA following the principle of borrower-wise classification.",
+   "gold_prefix": "rbi-md-12973-obl-039#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "Investment in shares of co- operative institutions from which a UCB has regularly received dividends shall be valued at face value. 21",
+   "gold_prefix": "rbi-md-13021-obl-096#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "threshold",
+   "query": "What is the percentage limit of 35 %?",
+   "gold_prefix": "rbi-md-13004-obl-025#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "definition",
+   "query": "What does \"Authority\" mean?",
+   "gold_prefix": "trai-904153ffc6-s001#",
+   "gold_table": "sections"
+  },
+  {
+   "kind": "requirement",
+   "query": "Card-issuers shall ensure that loans offered through credit cards are in compliance with the instructions on loans and advances issued by the Reserve Bank from time to time.",
+   "gold_prefix": "rbi-md-13123-obl-021#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "The financial statements shall be subjected to limited review / audit on a quarterly basis by the statutory auditors.",
+   "gold_prefix": "rbi-md-12939-obl-011#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "threshold",
+   "query": "What is the amount limit of 5000 INR?",
+   "gold_prefix": "rbi-md-12930-obl-166#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "definition",
+   "query": "What does \"Scheduled bank\" mean?",
+   "gold_prefix": "rbi-md-10495-s033#",
+   "gold_table": "sections"
+  },
+  {
+   "kind": "requirement",
+   "query": "service providers shall be provided limited access to conduct the scan or analyse the data, and such access shall be provided only on the NBFC’s devices. RBI (NBFCs – Digital Payment Security Controls) Directions, 2026 29 A. Repeal and Saving",
+   "gold_prefix": "rbi-md-13591-obl-124#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "definition",
+   "query": "What does \"N on-Banking Financial Company (NBFC)\" mean?",
+   "gold_prefix": "rbi-md-12586-s005#",
+   "gold_table": "sections"
+  },
+  {
+   "kind": "definition",
+   "query": "What does \"Complaint Centre\" mean?",
+   "gold_prefix": "trai-3839b232cb-s003#",
+   "gold_table": "sections"
+  },
+  {
+   "kind": "requirement",
+   "query": "Factoring shall be treated on par with loans and advances and shall be subject to extant prudential norms on loans and advances as applicable;",
+   "gold_prefix": "rbi-md-13162-obl-075#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "A UCB shall ensure that the elongation of tenor in case of floating rate loan does not result in negative amortisation.",
+   "gold_prefix": "rbi-md-13013-obl-434#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "Intermediary bank shall take reasonable measures to identify cross-border wire transfers that lack required originator information or required beneficiary information. Such measures should be consistent with straight-through processing.",
+   "gold_prefix": "rbi-md-13090-obl-190#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "threshold",
+   "query": "What is the amount limit of 10000000 INR?",
+   "gold_prefix": "rbi-md-13144-obl-036#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "A bank’s investment in debentures / bonds / security receipts / pass -through certificates (PTCs) issued by a Securitisation Company (SC) / Reconstruction Company (RC) as compensation consequent upon sale of financial assets shall constitute exposure on the SC / RC.",
+   "gold_prefix": "rbi-md-13074-obl-009#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "The complainant shall be advised by the CI / CIC of the action taken on the complaint in all cases, including the cases where the complaint has been rejected. In cases of rejection, the reasons for rejection shall also be provided by CI and CIC.",
+   "gold_prefix": "rbi-md-13122-obl-076#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "crop loans to farmers, which shall include traditional / non- traditional plantations, and horticulture;",
+   "gold_prefix": "rbi-md-12973-obl-042#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "threshold",
+   "query": "What is the percentage limit of 50 %?",
+   "gold_prefix": "rbi-md-13078-obl-129#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "“Derivative” shall have the same meaning as assigned to it in Section 45U(a) of the Reserve Bank of India Act, 1934.",
+   "gold_prefix": "rbi-md-12978-obl-004#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "Funds borrowed under repo including tri-party repo in government securities shall be exempted from CRR/SLR computation and the security acquired under repo shall be eligible for SLR provided the security is primarily eligible for SLR as per the provisions of the Act under which it is required to be maintained.",
+   "gold_prefix": "rbi-md-12920-obl-029#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "Seniority of claim 14 The claims of the investors in PNCPS shall be senior to the claims of investors in equity shares and subordinated to the claims of all other creditors and the depositors.",
+   "gold_prefix": "rbi-md-13030-obl-029#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "The tenor of a CD at issuance shall not be less than seven days and shall not exceed one year.",
+   "gold_prefix": "rbi-md-12108-obl-008#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "definition",
+   "query": "What does \"Co-location Facilities\" mean?",
+   "gold_prefix": "trai-b9c334daf4-s001#",
+   "gold_table": "sections"
+  },
+  {
+   "kind": "requirement",
+   "query": "Interest or any charges / fees on the credit card shall not be factored in for the purpose of computing a cardholder’s credit limit usage and levying overlimit charges D. Types of credit cards",
+   "gold_prefix": "rbi-md-12956-obl-026#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "The bank shall implement the following controls at the HSMs:",
+   "gold_prefix": "rbi-md-13633-obl-127#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "A bank shall identify and classify a person as a 'wilful defaulter' by following the procedure enumerated in these Directions. The identification of the wilful default should be made keeping in view the track record of the borrowers and should not be decided on the basis of isolated transactions / incidents.",
+   "gold_prefix": "rbi-md-13067-obl-013#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "The procedure for transfer to legal heirs in the event of death of the subscriber of the instrument shall also be specified. D Reporting",
+   "gold_prefix": "rbi-md-13030-obl-111#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "definition",
+   "query": "What does \"General annuity business\" mean?",
+   "gold_prefix": "irdai-5dda2d60a0-s023#",
+   "gold_table": "sections"
+  },
+  {
+   "kind": "requirement",
+   "query": "The internal audit of the regulated entity shall cover the implementation and compliance with these Directions inter-alia, including:",
+   "gold_prefix": "rbi-md-12586-obl-029#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "threshold",
+   "query": "What is the percentage limit of 00 %?",
+   "gold_prefix": "rbi-md-10476-obl-011#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "The funds collected by various branches of the bank or other banks for the issue and held pending finalisation of allotment of the Upper Tier 2 Capital instruments shall have to be taken into account for the purpose of calculating reserve requirements; and",
+   "gold_prefix": "rbi-md-13097-obl-052#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "t he SU shall store the credit information received from the CICs only for a limited time period of six months or till such time the credit information is required to be retained to satisfy the purpose for which it was intended, whichever is earlier and thereafter, the stored credit information shall be deleted.",
+   "gold_prefix": "rbi-md-12926-obl-015#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "definition",
+   "query": "What does \"Set Top Box\" mean?",
+   "gold_prefix": "trai-2698c41440-s014#",
+   "gold_table": "sections"
+  },
+  {
+   "kind": "definition",
+   "query": "What does \"Mobile Number Portability\" mean?",
+   "gold_prefix": "trai-d5853c1e66-s001#",
+   "gold_table": "sections"
+  },
+  {
+   "kind": "threshold",
+   "query": "What is the amount limit of 1 INR?",
+   "gold_prefix": "rbi-md-12799-obl-006#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "threshold",
+   "query": "What is the amount limit of 6000000 INR?",
+   "gold_prefix": "rbi-md-12983-obl-191#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "definition",
+   "query": "What does \"DTH service\" mean?",
+   "gold_prefix": "trai-7a8c7b616a-s001#",
+   "gold_table": "sections"
+  },
+  {
+   "kind": "requirement",
+   "query": "The bank shall make all accounts opened through V -CIP operational only after subjecting them to concurrent audit to ensure the integrity of process and its acceptability of its outcome.",
+   "gold_prefix": "rbi-md-13109-obl-076#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "A User shall be classified by market-makers either as retail or non-retail for the purpose of offering interest rate derivative contracts.",
+   "gold_prefix": "rbi-md-13214-obl-012#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "A prospective transferee interested in acquiring a specific stressed loan may offer a bid to the bank(s), which shall be termed as the base-bid.",
+   "gold_prefix": "rbi-md-13048-obl-079#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "threshold",
+   "query": "What is the percentage limit of 50 %?",
+   "gold_prefix": "rbi-md-13147-obl-263#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "In terms of Reserve Bank of India (Regional Rural Banks – Credit Facilities) Directions, 2025, if a bank is the Default Loss Guarantee (DLG) provider, it shall deduct full amount of the DLG, which is outstanding, from its capital. D Tier 2 capital",
+   "gold_prefix": "rbi-md-13055-obl-022#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "8[‘Relative’ with regard to a natural person shall have the same meaning as defined in Section 2(77) of the Companies Act, 2013 and rules framed therein.]",
+   "gold_prefix": "rbi-md-13153-obl-005#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "threshold",
+   "query": "What is the percentage limit of 20 %?",
+   "gold_prefix": "rbi-md-12978-obl-017#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "definition",
+   "query": "What does \"DL-PDR\" mean?",
+   "gold_prefix": "trai-26c05b922b-s009#",
+   "gold_table": "sections"
+  },
+  {
+   "kind": "threshold",
+   "query": "What is the percentage limit of 2 %?",
+   "gold_prefix": "rbi-md-12983-obl-050#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "While such public sector units may include Special Purpose Vehicles (SPVs) registered under the Companies Act set up for financing infrastructure projects, it shall be ensured by the bank that these loans / investments are not used for financing the budget of the State Governments.",
+   "gold_prefix": "rbi-md-13124-obl-238#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "It shall also have a developmental function of training and awareness programmes for its members, for the Self-Help Groups and conduct research and development for the growth of the MFI sector.",
+   "gold_prefix": "rbi-md-12933-obl-052#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "definition",
+   "query": "What does \"Authority\" mean?",
+   "gold_prefix": "trai-1df84cb9e5-s001#",
+   "gold_table": "sections"
+  },
+  {
+   "kind": "definition",
+   "query": "What does \"Switches\" mean?",
+   "gold_prefix": "irdai-5dda2d60a0-s023#",
+   "gold_table": "sections"
+  },
+  {
+   "kind": "requirement",
+   "query": "The head of the Group financial conglomerate shall develop and maintain liquidity management processes and funding programmes that are 22 consistent with the complexity, risk profile, and scope of operations of the financial conglomerate.",
+   "gold_prefix": "rbi-md-13093-obl-095#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "threshold",
+   "query": "What is the amount limit of 150000000000 INR?",
+   "gold_prefix": "rbi-md-13612-obl-021#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "Assessed net -worth shall be more than ₹25 crore as per the last supervisory inspection;",
+   "gold_prefix": "rbi-md-13007-obl-039#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "definition",
+   "query": "What does \"Authorised Dealer\" mean?",
+   "gold_prefix": "rbi-md-10637-s013#",
+   "gold_table": "sections"
+  },
+  {
+   "kind": "requirement",
+   "query": "Unlisted convertible debentures (Investments in these instruments shall be treated as ‘Capital Market Exposure’).",
+   "gold_prefix": "rbi-md-12975-obl-138#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "A UCB shall have at least 25 branches spread across a minimum of 25 districts in three or more states with IT infrastructure and electronically linked to Central Record keeping Agency (CRA). 12 F.2 Application Procedure",
+   "gold_prefix": "rbi-md-13033-obl-040#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "for proviso to sub-regulation (3), the following proviso shall be substituted, namely:- “Provided that the rate of distribution fee declared by the broadcaster shall be same for pay channel and bouquet of pay channels and shall be uniform across all the distribution platforms.”",
+   "gold_prefix": "trai-695a9787f4-obl-005#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "‘ unsecured exposure’ shall mean an exposure where the realisable value of the security, as assessed by a bank / approved valuers / the Reserve Bank’s inspecting officers, is not more than ten per cent, ab-initio, of the outstanding exposure.",
+   "gold_prefix": "rbi-md-13146-obl-005#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "definition",
+   "query": "What does \"Transactional message\" mean?",
+   "gold_prefix": "trai-d35ce4de0f-s001#",
+   "gold_table": "sections"
+  },
+  {
+   "kind": "requirement",
+   "query": "Investment in PDI issued by other NBFC 16 An NBFC investing in PDI issued by other NBFC and financial institutions shall be subject to the definition of NOF as defined in Section 45-IA of the RBI Act, 1934 and shall attract risk weight as prescribed by the Reserve Bank;",
+   "gold_prefix": "rbi-md-12959-obl-039#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "The AIFI shall also incorporate suitable clauses in the loan agreements in future (at the time of next renewal in the case of existing facilities) regarding exchange of credit information so as to address confidentiality issues.",
+   "gold_prefix": "rbi-md-12977-obl-166#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "Where the notional is a formula of market values, the bank shall enter the current market values to determine the trade notional amount.",
+   "gold_prefix": "rbi-md-13137-obl-020#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "To avail the benefit of bilateral netting for computation of regulatory capital requirement for derivative transactions, a bank shall have an effective bilateral netting contract or agreement with each counterparty, as specified in paragraph 77.",
+   "gold_prefix": "rbi-md-13127-obl-185#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "The transferee(s) shall have no recourse to the transferor for any expenses or losses linked to the transferred economic interest except those specifically permitted under these guidelines.",
+   "gold_prefix": "rbi-md-12997-obl-024#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "The bank shall extend the facility only to those exporters whose track record has been good.",
+   "gold_prefix": "rbi-md-13156-obl-455#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "Units of Debt Mutual Funds and Money Market Mutual Funds. Provided that an RCB shall ensure that it does not have disproportionate exposure in any one scheme of a Mutual Fund or to any one Mutual Fund.",
+   "gold_prefix": "rbi-md-12995-obl-094#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "threshold",
+   "query": "What is the percentage limit of 9 %?",
+   "gold_prefix": "rbi-md-13030-obl-085#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "The exact due dates for repayment of a loan, frequency of repayment, breakup between principal and interest, examples of dates of classification as special mention account (SMA) / non-performing asset (NPA), etc. shall be clearly specified in the loan agreement.",
+   "gold_prefix": "rbi-md-13044-obl-015#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "There shall be close monitoring of pending items in Nostro accounts by top management at short intervals.",
+   "gold_prefix": "rbi-md-13041-obl-075#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "definition",
+   "query": "What does \"Broadband service\" mean?",
+   "gold_prefix": "trai-b192948b1a-s039#",
+   "gold_table": "sections"
+  },
+  {
+   "kind": "threshold",
+   "query": "What is the amount limit of 50000 INR?",
+   "gold_prefix": "rbi-md-13141-obl-208#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "Provisioning for project loans classified as NPA shall be as per the instructions in paragraphs 85 to 96 of these Directions.",
+   "gold_prefix": "rbi-md-13146-obl-135#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "definition",
+   "query": "What does \"Stock Broker Connect\" mean?",
+   "gold_prefix": "rbi-md-13376-s001#",
+   "gold_table": "sections"
+  },
+  {
+   "kind": "requirement",
+   "query": "Subsequent valuation of investments in such SRs on an ongoing basis shall, however, be strictly in terms of the provisions of these directions.",
+   "gold_prefix": "rbi-md-12977-obl-101#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "definition",
+   "query": "What does \"Non-banking financial company\" mean?",
+   "gold_prefix": "rbi-md-10495-s033#",
+   "gold_table": "sections"
+  },
+  {
+   "kind": "requirement",
+   "query": "All other instructions regarding credit information reporting by CIs to CICs shall remain unchanged 14 D. Rectification of rejected data and review of Data Quality Index (DQI)",
+   "gold_prefix": "rbi-md-13051-obl-031#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "The outstanding in the account based on drawing power calculated from stock statements older than three months, shall be deemed as irregular.",
+   "gold_prefix": "rbi-md-13114-obl-018#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "threshold",
+   "query": "What is the amount limit of 10000000000 INR?",
+   "gold_prefix": "rbi-md-12965-obl-017#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "If the off- balance sheet exposure is not r ated, it shall be deducted from capital, except an unrated eligible liquidity facility for which the treatment has been specified separately in paragraph 88.",
+   "gold_prefix": "rbi-md-13127-obl-264#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "The bank shall review the entire relaxation provisions after 24 months.",
+   "gold_prefix": "rbi-md-13141-obl-075#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "CAS shall support both covert and visible types of finger printing functionality.",
+   "gold_prefix": "trai-4a2791f21e-obl-032#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "definition",
+   "query": "What does \"Unified Access Service Provider\" mean?",
+   "gold_prefix": "trai-3878f5d803-s001#",
+   "gold_table": "sections"
+  },
+  {
+   "kind": "definition",
+   "query": "What does \"Products with participation in profits\" mean?",
+   "gold_prefix": "irdai-5dda2d60a0-s023#",
+   "gold_table": "sections"
+  },
+  {
+   "kind": "requirement",
+   "query": "The NBFC processing an intermediary element of a chain of wire transfers shall ensure that all originator and beneficiary information accompanying a wire transfer is retained with the transfer.",
+   "gold_prefix": "rbi-md-12943-obl-173#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "definition",
+   "query": "What does \"Benchmark Interest Rates\" mean?",
+   "gold_prefix": "rbi-md-12108-s002#",
+   "gold_table": "sections"
+  },
+  {
+   "kind": "definition",
+   "query": "What does \"NBFC-MFI\" mean?",
+   "gold_prefix": "rbi-md-12933-s007#",
+   "gold_table": "sections"
+  },
+  {
+   "kind": "requirement",
+   "query": "The PCFC shall be marked-off on the ‘First-in-First-Out’ basis.",
+   "gold_prefix": "rbi-md-13124-obl-443#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "The borrower shall be provided with an option to give or deny consent for use of specific data, restrict disclosure to third parties, data retention, revoke consent already granted to collect per sonal data and if required, make the bank/LSP delete/ forget the data.",
+   "gold_prefix": "rbi-md-13053-obl-044#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "threshold",
+   "query": "What is the percentage limit of 9 %?",
+   "gold_prefix": "rbi-md-13159-obl-486#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "threshold",
+   "query": "What is the percentage limit of 100 %?",
+   "gold_prefix": "rbi-md-13080-obl-128#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "definition",
+   "query": "What does \"DTH service\" mean?",
+   "gold_prefix": "trai-3d948b79ff-s001#",
+   "gold_table": "sections"
+  },
+  {
+   "kind": "requirement",
+   "query": "This Order shall apply to all telecommunication services provided throughout the territory of India including those originating in India and terminating outside Ind ia.",
+   "gold_prefix": "trai-5d3408763c-obl-015#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "The exposure amount after risk mitigation (i.e., E*) shall be multiplied by the risk weight of the counterparty to obtain the RWA amount for the collateralised transaction.",
+   "gold_prefix": "rbi-md-13159-obl-390#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "requirement",
+   "query": "Consequently, the collateral received shall:",
+   "gold_prefix": "rbi-md-13147-obl-410#",
+   "gold_table": "obligations"
+  },
+  {
+   "kind": "threshold_written",
+   "query": "What is the turnover limit to qualify for the GST composition scheme?",
+   "gold_prefix": "cbic-6134bf6f46-obl-002#",
+   "gold_table": "obligations",
+   "authored": "hand-written"
+  },
+  {
+   "kind": "threshold_written",
+   "query": "What general market risk charge applies to a local area bank's gross equity positions?",
+   "gold_prefix": "rbi-md-13080-obl-126#",
+   "gold_table": "obligations",
+   "authored": "hand-written"
+  },
+  {
+   "kind": "threshold_written",
+   "query": "How much general provisioning can a rural co-operative bank count towards Tier 2 capital?",
+   "gold_prefix": "rbi-md-13004-obl-074#",
+   "gold_table": "obligations",
+   "authored": "hand-written"
+  },
+  {
+   "kind": "threshold_written",
+   "query": "Above what value must a regional rural bank report dishonoured cheques in its MIS?",
+   "gold_prefix": "rbi-md-13039-obl-246#",
+   "gold_table": "obligations",
+   "authored": "hand-written"
+  },
+  {
+   "kind": "threshold_written",
+   "query": "What share of net profit must a small finance bank transfer to the Statutory Reserve?",
+   "gold_prefix": "rbi-md-13111-obl-102#",
+   "gold_table": "obligations",
+   "authored": "hand-written"
+  },
+  {
+   "kind": "threshold_written",
+   "query": "What risk weight applies to a bank's equity investment in an investee company?",
+   "gold_prefix": "rbi-md-13159-obl-197#",
+   "gold_table": "obligations",
+   "authored": "hand-written"
+  },
+  {
+   "kind": "threshold_written",
+   "query": "What risk weight applies when specific provisions are high relative to the outstanding?",
+   "gold_prefix": "rbi-md-13159-obl-181#",
+   "gold_table": "obligations",
+   "authored": "hand-written"
+  },
+  {
+   "kind": "threshold_written",
+   "query": "At what asset size must a small finance bank appoint joint statutory auditors?",
+   "gold_prefix": "rbi-md-13630-obl-021#",
+   "gold_table": "obligations",
+   "authored": "hand-written"
+  },
+  {
+   "kind": "threshold_written",
+   "query": "Is there a ceiling on carriage fee as a proportion of subscription revenue?",
+   "gold_prefix": "trai-724428b40f-obl-050#",
+   "gold_table": "obligations",
+   "authored": "hand-written"
+  },
+  {
+   "kind": "threshold_written",
+   "query": "What loan-to-value ratio must an NBFC maintain on loans against shares?",
+   "gold_prefix": "rbi-md-12957-obl-185#",
+   "gold_table": "obligations",
+   "authored": "hand-written"
+  },
+  {
+   "kind": "threshold_written",
+   "query": "What is the minimum owned funds requirement for a core investment company?",
+   "gold_prefix": "rbi-md-12961-obl-058#",
+   "gold_table": "obligations",
+   "authored": "hand-written"
+  },
+  {
+   "kind": "threshold_written",
+   "query": "What proportion of profit must a payments bank move to its Statutory Reserve?",
+   "gold_prefix": "rbi-md-13092-obl-095#",
+   "gold_table": "obligations",
+   "authored": "hand-written"
+  }
+ ]
+}

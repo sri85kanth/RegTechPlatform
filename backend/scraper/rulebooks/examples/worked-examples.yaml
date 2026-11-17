@@ -1,0 +1,98 @@
+# Three worked examples (design §4.9, §11 Phase 1): one low, one high, one
+# INSUFFICIENT_EVIDENCE. Synthetic inputs shaped like the Premier Hospitals demo
+# corpus; the end-to-end run on the real corpus is Phase 5. The tests pin the
+# engine's answers to these, so a rulebook change that moves them shows up.
+
+as_of: "2026-11-12"
+
+appetite:                         # what leadership would approve at gate G1
+  status: APPROVED
+  version: 1
+  confidence_threshold: 60
+  categories:
+    safety:       {appetite: MEDIUM, tolerance: HIGH}
+    regulatory:   {appetite: MEDIUM, tolerance: HIGH}
+    data:         {appetite: LOW,    tolerance: MEDIUM}
+    operational:  {appetite: MEDIUM, tolerance: HIGH}
+    financial:    {appetite: MEDIUM, tolerance: HIGH}
+    reputational: {appetite: MEDIUM, tolerance: HIGH}
+
+hospital: &hospital               # facts every exposure at the Hyderabad site shares
+  exposure: {sites: 1, scale_index: high}         # 250 beds → high (healthcare pack)
+  history:
+    status: attested                               # "no inspections, findings or incidents in 36 months"
+    open_observations_theme_24m: 0
+    serious_36m: 0
+    overdue_capa_theme: 0
+    clean_inspection_theme_24m: false
+  profile: {turnover_inr: 3500000000}             # ₹350 crore
+
+examples:
+  - name: low
+    expect: {verdict: WITHIN_APPETITE, inherent: MEDIUM, residual: LOW, target: LOW}
+    input:
+      risk: {id: R-LABOUR-HYD, title: "Wage payment and records — Hyderabad", theme: LABOUR, site: HYD}
+      shared: *hospital
+      exposures:
+        - id: X-WAGES-5
+          label: "Code on Wages — pay wages by the 7th"
+          applicability: APPLICABLE
+          gap_status: MET
+          gap_status_reviewed: true
+          facts:
+            instrument_type: act
+            penalty: {present: true, imprisonment: false, max_fine_inr: 50000}
+            consequence: []
+            regulator: {name: Labour Department, inspection_frequency: annual, publishes_enforcement: false}
+            exposure: {guards_licence: false}
+            requirement: {section_changed_12m: false}
+          controls:
+            - {id: C-PAY-01, label: "Payroll run with bank-file reconciliation", kind: preventive,
+               approved_document: true, test_evidence: true, frequency: monthly, newest_evidence_on: "2026-10-31"}
+
+  - name: high
+    expect: {verdict: ESCALATE, inherent: CRITICAL, residual: CRITICAL, target: HIGH}
+    input:
+      risk: {id: R-BMW-HYD, title: "Biomedical waste segregation and disposal — Hyderabad", theme: BMW, site: HYD}
+      shared: *hospital
+      exposures:
+        - id: X-BMW-SEG
+          label: "BMW Rules 2016 — segregate waste at source in colour-coded bins"
+          applicability: APPLICABLE
+          gap_status: PARTIAL
+          gap_status_reviewed: false
+          facts:
+            instrument_type: rules
+            penalty: {present: true, imprisonment: true, max_fine_inr: 100000}   # inherited from the Environment (Protection) Act
+            consequence: []
+            regulator: {name: SPCB, inspection_frequency: annual, publishes_enforcement: false}
+            exposure: {guards_licence: true}                       # the SPCB authorisation the site runs on
+            requirement: {section_changed_12m: false}
+          controls:
+            - {id: C-BMW-SOP, label: "BMW segregation SOP v3", kind: preventive,
+               approved_document: true, test_evidence: true, frequency: monthly, newest_evidence_on: "2026-09-03"}
+          planned:
+            - {action_id: A-1, kind: preventive, title: "Resume the monthly colour-coded bin audit"}
+      unconfirmed_facts: [exposure.scale_index]
+
+  - name: insufficient
+    expect: {verdict: INSUFFICIENT_EVIDENCE}
+    input:
+      risk: {id: R-RAD-HYD, title: "Radiation safety in diagnostic X-ray — Hyderabad", theme: RAD, site: HYD}
+      shared:
+        exposure: {sites: 1, scale_index: high}
+        history: {status: null}                                     # nothing collected, nothing attested
+        profile: {turnover_inr: 3500000000}
+      exposures:
+        - id: X-AERB-DOSE
+          label: "AERB code — personnel dose monitoring for radiation workers"
+          applicability: APPLICABLE
+          gap_status: null                                          # not yet checked against our documents
+          facts:
+            instrument_type: standard
+            penalty: {present: true, imprisonment: true}
+            consequence: [licence_suspension]
+            regulator: {name: AERB, inspection_frequency: biennial, publishes_enforcement: false}
+            exposure: {guards_licence: true}                       # the AERB licence for the X-ray units
+            requirement: {section_changed_12m: false}
+          controls: []

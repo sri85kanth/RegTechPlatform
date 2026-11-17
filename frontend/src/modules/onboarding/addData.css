@@ -1,0 +1,101 @@
+/*
+ * Add data (Connections, Documents, Spreadsheet import): small, purposeful motion.
+ * --d is a stagger delay, --c a colour, --len a ring's length, --w a bar's width.
+ */
+
+/* a tab's content slides in when the tab changes */
+.ad-tab-in { animation: ad-tab-in 0.42s cubic-bezier(0.2, 0.8, 0.2, 1); }
+@keyframes ad-tab-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+/* cards and rows rise in one after another */
+.ad-rise { animation: ad-rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; animation-delay: var(--d, 0ms); }
+@keyframes ad-rise { from { opacity: 0; transform: translateY(10px) scale(0.995); } to { opacity: 1; transform: none; } }
+
+/* a card lifts a little under the pointer */
+.ad-card { transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s ease, border-color 0.2s ease; }
+.ad-card:hover { transform: translateY(-2px); box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.06), 0 14px 32px -16px rgba(0, 0, 0, 0.22); }
+
+/* icon tiles tilt when their card is hovered */
+.ad-ic { transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.group:hover .ad-ic, .ad-card:hover .ad-ic { transform: rotate(-8deg) scale(1.08); }
+
+/* a row: an accent edge in its colour grows in on hover */
+.ad-row { position: relative; transition: background-color 0.2s ease; }
+.ad-row::before {
+  content: ''; position: absolute; left: 0; top: 12px; bottom: 12px; width: 3px; border-radius: 0 3px 3px 0;
+  background: var(--c, #0071e3); transform: scaleY(0); transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.ad-row:hover { background: #f9fafc; }
+.ad-row:hover::before { transform: scaleY(1); }
+
+/* bars grow from the left; rings draw to their value */
+.ad-grow { transform-origin: left; animation: ad-grow 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; animation-delay: calc(var(--d, 0ms) + 0.2s); }
+@keyframes ad-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.ad-rise-up { transform-origin: bottom; animation: ad-rise-up 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; animation-delay: calc(var(--d, 0ms) + 0.25s); }
+@keyframes ad-rise-up { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+.ad-ring { animation: ad-ring 1s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; animation-delay: calc(var(--d, 0ms) + 0.15s); }
+@keyframes ad-ring { from { stroke-dasharray: 0 var(--len); } }
+
+/* a badge or a chip pops in */
+.ad-pop { animation: ad-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) backwards; animation-delay: calc(var(--d, 0ms) + 0.2s); }
+@keyframes ad-pop { from { opacity: 0; transform: scale(0.6); } to { opacity: 1; transform: none; } }
+
+/* something working breathes */
+.ad-pulse { animation: ad-pulse 2.2s ease-out infinite; }
+@keyframes ad-pulse {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--c, #0071e3) 45%, transparent); }
+  70% { box-shadow: 0 0 0 7px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+/* a panel that opens slides down into place */
+.ad-open { animation: ad-open 0.36s cubic-bezier(0.2, 0.8, 0.2, 1); }
+@keyframes ad-open { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: none; } }
+
+/* the how-it-works steps: joined by a line that draws across */
+.ad-flow { position: relative; }
+.ad-flow::before {
+  content: ''; position: absolute; left: 14px; right: 14px; top: 13px; height: 2px; border-radius: 2px;
+  background: linear-gradient(90deg, #0071e3, #30b0c7, #8b5cf6, #34c759); opacity: 0.35;
+  transform-origin: left; animation: ad-grow 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s backwards;
+}
+
+/* a vertical timeline: the line draws down */
+.ad-steps { position: relative; }
+.ad-steps::before {
+  content: ''; position: absolute; left: 15px; top: 16px; bottom: 16px; width: 2px; border-radius: 2px;
+  background: linear-gradient(#0071e3, #8b5cf6 50%, #34c759); opacity: 0.3;
+  transform-origin: top; animation: ad-line 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s backwards;
+}
+@keyframes ad-line { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+
+/* a choice tile: lifts, and its border takes its colour */
+.ad-choice {
+  position: relative; display: flex; align-items: center; gap: 12px; width: 100%; text-align: left;
+  padding: 14px; border-radius: 16px; border: 1px solid #e5e7eb; background: #fff;
+  transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s ease, border-color 0.2s ease;
+}
+.ad-choice:hover:not(:disabled) {
+  transform: translateY(-2px); border-color: color-mix(in srgb, var(--c) 45%, white);
+  box-shadow: 0 14px 30px -16px color-mix(in srgb, var(--c) 60%, transparent);
+}
+.ad-choice:hover:not(:disabled) .ad-ic { transform: rotate(-8deg) scale(1.08); }
+.ad-choice:focus-visible { outline: none; box-shadow: 0 0 0 3px color-mix(in srgb, var(--c) 35%, white); }
+.ad-choice:disabled { opacity: 0.55; cursor: not-allowed; }
+.ad-choice .ad-go { margin-left: auto; color: #a1a1a6; transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), color 0.2s ease; }
+.ad-choice:hover:not(:disabled) .ad-go { transform: translateX(3px); color: var(--c); }
+
+/* an upload's progress: a bar with a moving sheen */
+.ad-sheen { position: relative; overflow: hidden; }
+.ad-sheen::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+  transform: translateX(-100%); animation: ad-sheen 1.4s ease-in-out infinite;
+}
+@keyframes ad-sheen { to { transform: translateX(100%); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .ad-tab-in, .ad-rise, .ad-grow, .ad-rise-up, .ad-ring, .ad-pop, .ad-pulse, .ad-open,
+  .ad-flow::before, .ad-steps::before, .ad-sheen::after { animation: none !important; }
+  .ad-card, .ad-ic, .ad-row, .ad-row::before, .ad-choice, .ad-choice .ad-go { transition: none; }
+}

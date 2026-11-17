@@ -1,0 +1,59 @@
+/*
+ * Regulation page (RegulationDetailPage, ImpactTab): small, purposeful motion.
+ * --d is a stagger delay, --c a colour, --len a ring's length.
+ */
+
+/* a tab's content slides in when the tab changes */
+.rd-tab-in { animation: rd-tab-in 0.42s cubic-bezier(0.2, 0.8, 0.2, 1); }
+@keyframes rd-tab-in { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: none; } }
+
+/* cards and rows rise in one after another */
+.rd-rise { animation: rd-rise 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; animation-delay: var(--d, 0ms); }
+@keyframes rd-rise { from { opacity: 0; transform: translateY(10px) scale(0.995); } to { opacity: 1; transform: none; } }
+
+/* a card lifts a little under the pointer */
+.rd-card { transition: transform 0.35s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.35s ease; }
+.rd-card:hover { transform: translateY(-2px); box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.06), 0 14px 32px -16px rgba(0, 0, 0, 0.22); }
+
+/* icon tiles tilt when their card is hovered */
+.rd-ic { transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1); }
+.group:hover .rd-ic, .rd-card:hover .rd-ic { transform: rotate(-8deg) scale(1.08); }
+
+/* a link's arrow steps forward on hover */
+.rd-link { display: inline-flex; align-items: center; gap: 4px; font-size: 12.5px; font-weight: 600; color: #0071e3; }
+.rd-link > i { font-style: normal; transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.rd-link:hover { color: #0062c4; }
+.rd-link:hover > i { transform: translateX(3px); }
+
+/* a row slides a touch toward the pointer */
+.rd-row { transition: background-color 0.2s ease, transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.rd-row:hover { background: #f7f8fb; transform: translateX(2px); }
+
+/* bars grow from the left; rings draw to their value */
+.rd-grow { transform-origin: left; animation: rd-grow 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; animation-delay: calc(var(--d, 0ms) + 0.2s); }
+@keyframes rd-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.rd-ring { animation: rd-ring 1s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; animation-delay: calc(var(--d, 0ms) + 0.15s); }
+@keyframes rd-ring { from { stroke-dasharray: 0 var(--len); } }
+
+/* a badge or a verdict tile pops in */
+.rd-pop { animation: rd-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) backwards; animation-delay: calc(var(--d, 0ms) + 0.2s); }
+@keyframes rd-pop { from { opacity: 0; transform: scale(0.6); } to { opacity: 1; transform: none; } }
+
+/* something still to do breathes */
+.rd-pulse { animation: rd-pulse 2.4s ease-out infinite; }
+@keyframes rd-pulse {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--c, #ff9f0a) 45%, transparent); }
+  70% { box-shadow: 0 0 0 8px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+/* a stepper: the checks that passed, joined by a line that draws down */
+.rd-steps { position: relative; }
+.rd-steps::before { content: ''; position: absolute; left: 15px; top: 14px; bottom: 14px; width: 2px; border-radius: 2px;
+  background: linear-gradient(#34c759, #b3eac3); transform-origin: top; animation: rd-line 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) 0.2s backwards; }
+@keyframes rd-line { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .rd-tab-in, .rd-rise, .rd-grow, .rd-ring, .rd-pop, .rd-pulse, .rd-steps::before { animation: none !important; }
+  .rd-card, .rd-ic, .rd-row, .rd-link > i { transition: none; }
+}

@@ -1,0 +1,9 @@
+[Unit]
+Description=Morning ops digest
+
+[Timer]
+OnCalendar=*-*-* 08:30:00 Asia/Kolkata
+Persistent=true
+
+[Install]
+WantedBy=timers.target

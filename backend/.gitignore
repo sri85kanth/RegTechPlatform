@@ -1,0 +1,16 @@
+__pycache__/
+.pytest_cache/
+*.pyc
+.env
+.env.*
+!.env.example
+scraper/.config-key
+scraper/output/
+scraper/data/
+scraper/input/
+scraper/models/
+scraper/checkpoints/
+deploy/langfuse/.env*
+.venv/
+scraper/.venv/
+*.log

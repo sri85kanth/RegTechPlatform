@@ -1,0 +1,14 @@
+[Unit]
+Description=Company Brain nightly pg_dump (company_brain + company_brain_rag)
+After=postgresql.service
+Requires=postgresql.service
+
+[Service]
+Type=oneshot
+User=postgres
+Group=postgres
+Nice=10
+ExecStart=/bin/sh -c 'set -e; d=/var/backups/company-brain; ts=$(date +%%F); \
+  pg_dump -Fc -f "$d/company_brain-$ts.dump" company_brain; \
+  pg_dump -Fc -f "$d/company_brain_rag-$ts.dump" company_brain_rag; \
+  find "$d" -name "*.dump" -mtime +7 -delete; ls -lh "$d" | tail -3'

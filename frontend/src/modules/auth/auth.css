@@ -1,0 +1,68 @@
+/* Sign-in and the splash after it: the motion that makes them feel alive.
+   Every animation stops for people who ask their system for reduced motion. */
+
+@keyframes cb-ring {
+  0% { transform: scale(0.75); opacity: 0.55; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+.cb-ring { animation: cb-ring 2.4s cubic-bezier(0.2, 0.7, 0.2, 1) infinite; }
+.cb-ring-2 { animation-delay: 0.8s; }
+.cb-ring-3 { animation-delay: 1.6s; }
+
+@keyframes cb-orbit { to { transform: rotate(360deg); } }
+.cb-orbit { animation: cb-orbit 7s linear infinite; }
+.cb-orbit-rev { animation: cb-orbit 11s linear infinite reverse; }
+
+@keyframes cb-think {
+  0%, 100% { transform: scale(1); filter: drop-shadow(0 0 0 rgba(165, 180, 252, 0)); }
+  50% { transform: scale(1.06); filter: drop-shadow(0 0 10px rgba(165, 180, 252, 0.9)); }
+}
+.cb-think { animation: cb-think 1.8s ease-in-out infinite; }
+
+@keyframes cb-glow {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(129, 140, 248, 0.45), 0 20px 50px -18px rgba(99, 102, 241, 0.9); }
+  50% { box-shadow: 0 0 0 14px rgba(129, 140, 248, 0), 0 24px 60px -18px rgba(168, 85, 247, 0.95); }
+}
+.cb-glow { animation: cb-glow 2.4s ease-in-out infinite; }
+
+@keyframes cb-line-in {
+  from { opacity: 0; transform: translateY(6px); filter: blur(3px); }
+  to { opacity: 1; transform: none; filter: none; }
+}
+.cb-line-in { animation: cb-line-in 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+
+@keyframes cb-caret { 50% { opacity: 0; } }
+.cb-caret { animation: cb-caret 1s steps(1) infinite; }
+
+@keyframes cb-shimmer {
+  from { background-position: 0% 50%; }
+  to { background-position: 200% 50%; }
+}
+.cb-shimmer {
+  background-image: linear-gradient(90deg, #c7d2fe, #67e8f9, #f0abfc, #c7d2fe);
+  background-size: 200% 100%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: cb-shimmer 6s linear infinite;
+}
+
+@keyframes cb-rise {
+  from { opacity: 0; transform: translateY(14px) scale(0.98); }
+  to { opacity: 1; transform: none; }
+}
+.cb-rise { animation: cb-rise 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both; }
+.cb-rise-1 { animation-delay: 0.08s; }
+.cb-rise-2 { animation-delay: 0.16s; }
+.cb-rise-3 { animation-delay: 0.24s; }
+.cb-rise-4 { animation-delay: 0.32s; }
+
+@keyframes cb-splash-out {
+  to { opacity: 0; transform: scale(1.04); filter: blur(6px); }
+}
+.cb-splash-out { animation: cb-splash-out 0.45s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
+
+@media (prefers-reduced-motion: reduce) {
+  .cb-ring, .cb-orbit, .cb-orbit-rev, .cb-think, .cb-glow, .cb-caret, .cb-shimmer { animation: none; }
+  .cb-line-in, .cb-rise, .cb-splash-out { animation-duration: 0.01s; }
+}

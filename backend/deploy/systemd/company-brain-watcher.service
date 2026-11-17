@@ -1,0 +1,14 @@
+[Unit]
+Description=Company Brain source watcher — one pass over due government documents
+After=postgresql.service network-online.target
+Requires=postgresql.service
+
+[Service]
+Type=oneshot
+User=brain
+Group=brain
+WorkingDirectory=/srv/company-brain/scraper
+EnvironmentFile=/etc/company-brain/env
+Environment=PYTHONPATH=/srv/company-brain/scraper
+Nice=10
+ExecStart=/srv/company-brain/.venv/bin/python -c 'import json; from regulatory_ingestion.db import connect; from regulatory_ingestion import watcher; r = watcher.run(connect(), limit=60); print(json.dumps({k: r[k] for k in ("checked", "outcomes", "at")}))'

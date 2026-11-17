@@ -1,0 +1,9 @@
+# Discovery and structured extraction. Only needed on a box that CRAWLS.
+# crawl4ai pulls Playwright; after installing run:  playwright install chromium
+-r requirements.txt
+crawl4ai==0.9.2
+docling==2.121.0
+# docling's layout models need torchvision matching the EXACT torch build.
+# On a CPU box with torch 2.14.0+cpu the plain-PyPI torchvision wheel breaks
+# ("operator torchvision::nms does not exist"); install the +cpu wheel:
+#   pip install torchvision==0.29.0+cpu --index-url https://download.pytorch.org/whl/cpu

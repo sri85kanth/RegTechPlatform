@@ -1,0 +1,8 @@
+# Semantic search over the 90k chunks. Imports are lazy, so the API starts
+# without this — /api/rag endpoints fail until it is installed.
+# torch is ~2.5 GB. On a CPU-only VPS install the CPU wheel first:
+#   pip install torch==2.13.0 --index-url https://download.pytorch.org/whl/cpu
+-r requirements.txt
+sentence-transformers==6.0.0
+torch==2.13.0
+numpy==2.5.2

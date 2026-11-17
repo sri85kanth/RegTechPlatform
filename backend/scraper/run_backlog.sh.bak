@@ -1,0 +1,19 @@
+#!/bin/bash
+# Full coverage run: every regulation with a document URL and no document,
+# then the same derived layers the original 648 went through, then the index.
+# Each stage prints; a stage failure stops the chain so nothing downstream
+# runs on half-written data.
+set -e
+set -a; . /etc/company-brain/env; set +a
+export PYTHONPATH=/srv/company-brain/scraper TRACE_SINKS= TOKENIZERS_PARALLELISM=false
+cd /srv/company-brain/scraper
+V=/srv/company-brain/.venv/bin/python
+echo "== ingest backlog ==";            $V ingest_backlog.py --delay 3
+echo "== clauses ==";                   $V extract_clauses.py --apply
+echo "== semantics ==";                 $V backfill_semantics.py
+echo "== applicability ==";             $V materialise_applicability.py --apply
+echo "== compliance ==";                $V derive_compliance.py --apply
+echo "== requirement instances ==";     $V materialise_cri.py --apply
+echo "== rag index ==";                 $V -c "from regulatory_ingestion import rag; print(rag.index())"
+echo "== rag eval ==";                  $V rag_eval.py run --tag post-backlog --multigold
+echo "== done =="

@@ -1,0 +1,35 @@
+/* Regulation picker sheet — springs open from where it was called, closes softly */
+.rp-backdrop { animation: rp-fade 0.25s var(--apple) backwards; }
+.rp-backdrop.out { animation: rp-fade-out 0.22s var(--apple) forwards; }
+.rp-panel { animation: rp-in 0.5s var(--spring) backwards; transform-origin: top center; }
+.rp-panel.out { animation: rp-out 0.22s var(--apple) forwards; }
+@keyframes rp-in { from { opacity: 0; transform: translateY(18px) scale(0.94); } to { opacity: 1; transform: none; } }
+@keyframes rp-out { to { opacity: 0; transform: translateY(10px) scale(0.96); } }
+@keyframes rp-fade { from { opacity: 0; } }
+@keyframes rp-fade-out { to { opacity: 0; } }
+
+/* switching tabs: the new content glides in from the side it was chosen on */
+.rp-tab { animation: rp-tab 0.38s var(--spring) backwards; }
+.rp-tab.from-left { animation-name: rp-tab-l; }
+@keyframes rp-tab { from { opacity: 0; transform: translateX(14px); } }
+@keyframes rp-tab-l { from { opacity: 0; transform: translateX(-14px); } }
+
+/* result cards arrive one after another */
+.rp-grid > * { animation: rp-card 0.42s var(--spring) backwards; }
+.rp-grid > *:nth-child(2) { animation-delay: 0.02s; }
+.rp-grid > *:nth-child(3) { animation-delay: 0.04s; }
+.rp-grid > *:nth-child(4) { animation-delay: 0.06s; }
+.rp-grid > *:nth-child(5) { animation-delay: 0.08s; }
+.rp-grid > *:nth-child(6) { animation-delay: 0.1s; }
+.rp-grid > *:nth-child(7) { animation-delay: 0.12s; }
+.rp-grid > *:nth-child(8) { animation-delay: 0.14s; }
+.rp-grid > *:nth-child(n + 9) { animation-delay: 0.16s; }
+@keyframes rp-card { from { opacity: 0; transform: translateY(10px) scale(0.98); } }
+
+/* bars in the info tab fill from the left */
+.rp-fill { transform-origin: left; animation: rp-fill 0.9s var(--spring) 0.15s backwards; }
+@keyframes rp-fill { from { transform: scaleX(0); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .rp-backdrop, .rp-panel, .rp-tab, .rp-grid > *, .rp-fill { animation: none !important; }
+}

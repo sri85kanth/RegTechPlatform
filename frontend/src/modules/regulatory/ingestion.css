@@ -1,0 +1,51 @@
+/* Ingestion page — Apple / Liquid Glass motion that is scoped to .ing */
+
+/* activity rings: each arc draws itself in, from empty to its share */
+.ing .ring-arc { transition: stroke-dashoffset 1.3s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.ing .ring-arc.r2 { transition-delay: 0.12s; }
+.ing .ring-arc.r3 { transition-delay: 0.24s; }
+
+/* the pipe between two stages: a translucent tube with a drop of light flowing along it */
+.ing .pipe { position: relative; overflow: hidden; border-radius: 999px; background: rgba(0, 113, 227, 0.12); }
+.ing .pipe::after {
+  content: ''; position: absolute; border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(0, 113, 227, 0.95), transparent);
+}
+.ing .pipe.h { height: 6px; }
+.ing .pipe.h::after { top: 0; bottom: 0; width: 45%; animation: ing-flow-x 1.8s cubic-bezier(0.45, 0, 0.25, 1) infinite; }
+.ing .pipe.v { width: 6px; }
+.ing .pipe.v::after { left: 0; right: 0; height: 45%; animation: ing-flow-y 1.8s cubic-bezier(0.45, 0, 0.25, 1) infinite; }
+/* a branch to the documents that need attention is dashed and amber */
+.ing .pipe.warn { background: repeating-linear-gradient(90deg, rgba(255, 159, 10, 0.35) 0 6px, transparent 6px 11px); }
+.ing .pipe.v.warn { background: repeating-linear-gradient(180deg, rgba(255, 159, 10, 0.35) 0 6px, transparent 6px 11px); }
+.ing .pipe.warn::after { background: linear-gradient(90deg, transparent, rgba(255, 159, 10, 0.95), transparent); }
+.ing .pipe.v.warn::after { background: linear-gradient(180deg, transparent, rgba(255, 159, 10, 0.95), transparent); }
+.ing .pipe.v:not(.warn)::after { background: linear-gradient(180deg, transparent, rgba(0, 113, 227, 0.95), transparent); }
+@keyframes ing-flow-x { from { transform: translateX(-110%); } to { transform: translateX(230%); } }
+@keyframes ing-flow-y { from { transform: translateY(-110%); } to { transform: translateY(230%); } }
+
+/* share bars grow from the left when they appear */
+.ing .grow { transform-origin: left; animation: ing-grow 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) 0.15s backwards; }
+@keyframes ing-grow { from { transform: scaleX(0); } to { transform: none; } }
+
+/* a status that is failing breathes, so it is noticed without shouting */
+.ing .breathe { animation: ing-breathe 2.4s cubic-bezier(0.25, 0.1, 0.25, 1) infinite; }
+@keyframes ing-breathe { 0%, 100% { box-shadow: 0 0 0 0 rgba(255, 59, 48, 0.35); } 50% { box-shadow: 0 0 0 6px rgba(255, 59, 48, 0); } }
+
+/* rows of the timeline and the feed slide in one after another */
+.ing .stagger > * { animation: ing-in 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; }
+.ing .stagger > *:nth-child(2) { animation-delay: 0.04s; }
+.ing .stagger > *:nth-child(3) { animation-delay: 0.08s; }
+.ing .stagger > *:nth-child(4) { animation-delay: 0.12s; }
+.ing .stagger > *:nth-child(5) { animation-delay: 0.16s; }
+.ing .stagger > *:nth-child(n + 6) { animation-delay: 0.2s; }
+@keyframes ing-in { from { opacity: 0; transform: translateX(-6px); } to { opacity: 1; transform: none; } }
+
+/* the refresh icon turns while new counts load */
+.ing-spin { animation: ing-spin 0.9s linear infinite; }
+@keyframes ing-spin { to { transform: rotate(360deg); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .ing .pipe::after, .ing .breathe, .ing-spin { animation: none !important; }
+  .ing .ring-arc { transition: none; }
+}

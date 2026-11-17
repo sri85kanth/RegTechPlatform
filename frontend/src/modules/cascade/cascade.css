@@ -1,0 +1,460 @@
+/* Impact cascade — scoped to .cascade so it cannot leak into other pages.
+   Apple / Liquid Glass treatment: borderless cards with layered depth, frosted
+   column groups, soft node cards with an icon tile, hairline connectors with
+   port dots, spring-eased motion. Colour still means status and nothing else:
+   the hospital's records are neutral with a blue tile; only an obligation's
+   status is coloured, and a missing link is dashed red. */
+.cascade {
+  /* one status palette everywhere (system colours; *-ink are the AA text shades) */
+  --bone:#F5F5F7; --panel:#FFFFFF; --ink:#1D1D1F; --ink-soft:#424245; --ink-faint:#6E6E73;
+  --verdigris:#34C759; --verdigris-soft:#EFFAF2; --amber:#FF9F0A; --amber-soft:#FFF8EB;
+  --oxide:#FF3B30; --oxide-soft:#FFF1F0; --statute:#0071E3; --statute-soft:#EEF6FF;
+  --nc:#FF6A00; --nc-soft:#FFF4EC;
+  --hair:#E5E5EA; --hair-soft:#F2F2F7; --r:18px;
+  --node-line:#E5E5EA; --edge:#C7CBD6; --edge-mk:#A1A1A6;
+  --verdigris-ink:#1F8A3D; --amber-ink:#B45F00; --nc-ink:#C24F00; --oxide-ink:#D70015;
+  --mono:-apple-system,BlinkMacSystemFont,'SF Pro Text','Inter',ui-sans-serif,system-ui,sans-serif;
+  --spring:cubic-bezier(.2,.8,.2,1); --bounce:cubic-bezier(.34,1.56,.64,1); --apple:cubic-bezier(.25,.1,.25,1);
+  --card-shadow:0 0 0 .5px rgba(0,0,0,.05),0 1px 2px rgba(0,0,0,.04),0 4px 16px rgba(0,0,0,.04);
+  --lift-shadow:0 0 0 .5px rgba(0,0,0,.05),0 2px 6px rgba(0,0,0,.05),0 14px 36px rgba(0,0,0,.09);
+  color: var(--ink); font-size: 14px; line-height: 1.5;
+  display: grid; gap: 16px;
+}
+/* every panel on the page is the same soft card, and rises into place */
+.cascade .canvas,.cascade .skey,.cascade .tcard,.cascade .dossier .head,.cascade .step{
+  background:var(--panel);border:0;border-radius:var(--r);box-shadow:var(--card-shadow);
+  animation:cc-rise .5s var(--spring) backwards}
+.cascade .canvas{animation-delay:.1s} .cascade .tcard{animation-delay:.15s}
+@keyframes cc-rise{from{opacity:0;transform:translateY(10px) scale(.99)}to{opacity:1;transform:none}}
+
+.cascade select{font:inherit;font-size:13px;color:var(--ink);background:var(--panel);border:1px solid var(--hair);border-radius:10px;padding:7px 10px;max-width:100%;min-width:0;transition:border-color .2s var(--apple),box-shadow .25s var(--apple)}
+.cascade select:focus{border-color:var(--statute);box-shadow:0 0 0 4px rgba(0,113,227,.18);outline:none}
+/* status tags are capsules — text uses the darker ink of each hue (AA) */
+.cascade .tag{font:600 11px var(--mono);border-radius:999px;padding:3px 9px;white-space:nowrap;display:inline-block;letter-spacing:0}
+.cascade .t-met{background:var(--verdigris-soft);color:var(--verdigris-ink)} .cascade .t-partial{background:var(--amber-soft);color:var(--amber-ink)}
+.cascade .t-gap{background:var(--oxide-soft);color:var(--oxide-ink)} .cascade .t-nc{background:var(--nc-soft);color:var(--nc-ink)} .cascade .t-na{background:var(--hair-soft);color:var(--ink-soft)}
+.cascade .t-miss{background:var(--oxide-soft);color:var(--oxide-ink);outline:1.5px dashed var(--oxide);outline-offset:-1.5px}
+.cascade .t-crit{background:var(--oxide);color:#fff} .cascade .t-high{background:var(--nc-soft);color:var(--nc-ink)} .cascade .t-med{background:var(--amber-soft);color:var(--amber-ink)} .cascade .t-low{background:var(--hair-soft);color:var(--ink-soft)}
+/* the diagram takes the whole width; the plan sits above it as a row of cards */
+.cascade .grid2{display:grid;grid-template-columns:minmax(0,1fr)}
+
+/* ---- status key ---- */
+.cascade .skey{padding:14px 18px}
+.cascade .skey h3{font-size:14px;font-weight:600;margin:0 0 8px}
+.cascade .skey ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:8px 20px}
+.cascade .skey li{display:flex;align-items:center;gap:10px;font-size:12.8px;color:var(--ink-soft);min-width:0}
+.cascade .skey li .tag{min-width:86px;text-align:center;font-weight:600}
+.cascade .skey .kdots{display:inline-flex;gap:4px;min-width:86px;justify-content:center}
+.cascade .skey .kdots i{width:9px;height:9px;border-radius:50%;display:inline-block;box-shadow:0 0 0 1.5px #fff,0 0 0 2.5px var(--hair)}
+.cascade .skey p{margin:10px 0 0;font-size:12px;color:var(--ink-faint)}
+
+/* ---- where the chain breaks: a path of steps, the weakest link glowing red ---- */
+/* the chain as a timeline in the plan row: dot · label and bar · count */
+.cascade .tl{list-style:none;margin:2px 0 0;padding:0}
+.cascade .tl li{position:relative;display:grid;grid-template-columns:20px minmax(0,1fr) 40px;align-items:center;gap:8px;height:32px;
+  animation:cc-rise .45s var(--spring) backwards;animation-delay:var(--d,0ms)}
+.cascade .tl .dot{position:relative;z-index:1;justify-self:center;width:12px;height:12px;border-radius:999px;background:#fff;box-shadow:0 0 0 3px #0071e3;
+  animation:cc-pop .4s cubic-bezier(.34,1.56,.64,1) backwards;animation-delay:calc(var(--d,0ms) + .1s)}
+/* the line from the dot above to this one, drawn downward */
+.cascade .tl li+li::before{content:"";position:absolute;left:9px;top:-16px;width:2px;height:32px;border-radius:2px;background:#8cc0fb;
+  transform-origin:top;animation:cc-line .4s cubic-bezier(.2,.8,.2,1) backwards;animation-delay:var(--d,0ms)}
+@keyframes cc-line{from{transform:scaleY(0)}to{transform:scaleY(1)}}
+.cascade .tl .tlb{min-width:0;display:grid;gap:3px}
+.cascade .tl .lbl{display:flex;align-items:center;gap:6px;min-width:0;font-size:12.5px;font-weight:500;color:var(--ink-soft);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cascade .tl .bar{display:block;height:4px;border-radius:999px;background:#f2f2f7;overflow:hidden}
+.cascade .tl .bar i{display:block;height:100%;width:var(--w);border-radius:inherit;background:linear-gradient(90deg,#8cc0fb,#0071e3);
+  transform-origin:left;animation:cc-bar-grow .8s cubic-bezier(.2,.8,.2,1) backwards;animation-delay:calc(var(--d,0ms) + .2s)}
+.cascade .tl b{font-size:14px;font-weight:700;text-align:right;font-variant-numeric:tabular-nums;color:var(--ink)}
+/* the break: a red dashed line into the link where most fall away, the drop beside its name */
+.cascade .tl li.weak::before{background:repeating-linear-gradient(180deg,#ff3b30 0 4px,transparent 4px 7px)}
+.cascade .tl li.weak .dot{box-shadow:0 0 0 3px #ff3b30;animation:cc-pop .4s cubic-bezier(.34,1.56,.64,1) backwards,cc-pulse 2.4s var(--apple) 1s infinite;animation-delay:calc(var(--d,0ms) + .1s),1s}
+.cascade .tl li.weak .lbl,.cascade .tl li.weak b{color:var(--oxide-ink);font-weight:700}
+.cascade .tl li.weak .bar i{background:linear-gradient(90deg,#ff9f97,#ff3b30)}
+.cascade .tl li.weak em{display:inline-flex;align-items:center;gap:2px;font-style:normal;font-size:10.5px;font-weight:700;color:#fff;background:var(--oxide);border-radius:999px;padding:1px 6px;
+  animation:cc-pop .45s cubic-bezier(.34,1.56,.64,1) backwards;animation-delay:calc(var(--d,0ms) + .4s)}
+/* links after the break: greyed */
+.cascade .tl li.after .dot{box-shadow:0 0 0 3px #c7c7cc}
+.cascade .tl li.after::before{background:#d1d1d6}
+.cascade .tl li.after .bar i{background:#a1a1a6}
+.cascade .tl li.after b{color:var(--ink-faint)}
+@keyframes cc-pop{from{opacity:0;transform:scale(.5)}to{opacity:1;transform:none}}
+
+
+/* ---- canvas: a soft dotted surface, zoom + pan ---- */
+.cascade .canvas{padding:14px 16px;min-width:0}
+/* how to use the canvas: a quiet glass label in the corner opposite the minimap, clear of the column headings */
+.cascade .chint{position:absolute;right:12px;bottom:12px;z-index:4;max-width:calc(100% - 270px);font-size:11.5px;color:var(--ink-faint);
+  padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.72);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);
+  box-shadow:0 0 0 .5px rgba(0,0,0,.05);pointer-events:none;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* height is set by fit() to the drawing's height (360–820px); this is the pre-fit default */
+.cascade .viewport{position:relative;height:480px;min-height:360px;max-height:820px;overflow:hidden;border-radius:14px;cursor:grab;
+  background-color:#F5F6FA;background-image:radial-gradient(circle,#D7DAE3 1px,transparent 1.3px),linear-gradient(180deg,#F7F8FB,#EEF0F6);
+  background-size:20px 20px,100% 100%;box-shadow:inset 0 0 0 .5px rgba(0,0,0,.06);touch-action:none;user-select:none}
+.cascade .viewport.dragging{cursor:grabbing}
+.cascade .stage{position:absolute;left:0;top:0;transform-origin:0 0;will-change:transform}
+.cascade .stage svg{display:block;max-width:none;overflow:visible}
+.cascade .viewport .empty{position:absolute;inset:0;display:grid;place-content:center;gap:8px;text-align:center;color:var(--ink-faint)}
+
+/* ---- minimap + zoom: a Liquid Glass card in the corner ---- */
+.cascade .minimap{position:absolute;left:12px;bottom:12px;z-index:5;display:grid;gap:6px;padding:8px;border-radius:16px;cursor:default;
+  background:rgba(255,255,255,.66);-webkit-backdrop-filter:blur(20px) saturate(180%);backdrop-filter:blur(20px) saturate(180%);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 0 0 .5px rgba(0,0,0,.06),0 8px 28px rgba(0,0,0,.10);
+  animation:cc-rise .5s var(--spring) .35s backwards}
+.cascade .mmap{position:relative;overflow:hidden;border-radius:10px;background:rgba(245,246,250,.9);box-shadow:inset 0 0 0 .5px rgba(0,0,0,.06);cursor:pointer}
+.cascade .mmap[hidden]{display:none}
+.cascade .mstage svg{width:100%;height:100%;display:block;pointer-events:none}
+.cascade .mstage .colhead text,.cascade .mstage .node text,.cascade .mstage .elbl,.cascade .mstage .port{display:none}
+.cascade .mstage .node{animation:none!important;opacity:1!important}
+.cascade .mstage .edge{animation:none!important;stroke-dasharray:none!important;opacity:.7}
+.cascade .mview{position:absolute;left:0;top:0;border-radius:4px;background:rgba(0,113,227,.10);box-shadow:inset 0 0 0 1.5px rgba(0,113,227,.75);
+  transition:transform .12s linear,width .2s var(--spring),height .2s var(--spring);pointer-events:none}
+.cascade .ztools{display:inline-flex;align-items:center;gap:2px}
+.cascade .zb{font:inherit;font-size:13px;font-weight:600;min-width:30px;height:28px;border:0;border-radius:999px;background:transparent;color:var(--ink-soft);cursor:pointer;padding:0 8px;
+  transition:background-color .2s var(--apple),transform .25s var(--bounce)}
+.cascade .zb.wide{font-size:12px;padding:0 10px}
+.cascade .zb:hover{background:rgba(0,0,0,.06);color:var(--ink)}
+.cascade .zb:active{transform:scale(.9)}
+.cascade .zl{font:600 12px var(--mono);color:var(--ink-soft);min-width:44px;text-align:center;font-variant-numeric:tabular-nums}
+.cascade .zsep{width:1px;height:16px;background:rgba(0,0,0,.1);margin:0 3px}
+
+/* ---- the lattice ---- */
+/* column groups: frosted panels */
+.cascade svg .grp{fill:rgba(255,255,255,.58);stroke:rgba(255,255,255,.95);stroke-width:1;filter:drop-shadow(0 6px 18px rgba(30,40,80,.06)) drop-shadow(0 0 .5px rgba(0,0,0,.12))}
+.cascade svg .gbadge{fill:var(--statute);filter:drop-shadow(0 2px 4px rgba(0,113,227,.35))}
+.cascade svg .gcount{fill:rgba(0,0,0,.05)}
+.cascade svg .chl{font:600 13px var(--mono);letter-spacing:-.01em;fill:var(--ink)}
+.cascade svg .chn{font:600 11px var(--mono);fill:var(--ink-faint)}
+.cascade svg .lbl{font-size:11.5px;font-weight:600;fill:var(--ink);letter-spacing:-.005em}
+.cascade svg .lbl.mlbl{fill:var(--oxide-ink)}
+.cascade svg .sl{font:400 10.5px var(--mono);fill:var(--ink-faint)}
+.cascade svg .sl.loc{fill:#8E8E93}
+.cascade svg .spt{font:600 9.5px var(--mono)}
+.cascade svg .spill{stroke-opacity:.35;stroke-width:1}
+.cascade svg .ntile{filter:drop-shadow(0 1.5px 3px rgba(0,0,0,.14))}
+.cascade svg .rdot{stroke:#fff;stroke-width:1.6}
+/* corner radius comes from the rx attribute (CSS rx is ignored by Safari) */
+.cascade svg rect.box{stroke-width:1;filter:drop-shadow(0 1px 1.5px rgba(0,0,0,.05)) drop-shadow(0 4px 10px rgba(30,40,80,.06));
+  transition:stroke-width .2s var(--apple),stroke .2s var(--apple),filter .3s var(--spring)}
+.cascade svg .node.obl rect.box{stroke-opacity:.45}
+.cascade svg .edge{fill:none;stroke-width:1.3;opacity:.95;transition:opacity .25s var(--apple),stroke-width .25s var(--apple),stroke .25s var(--apple)}
+.cascade svg .port{fill:#fff;stroke:#A1A1A6;stroke-width:1.3;transition:opacity .25s var(--apple)}
+.cascade svg .port.miss{stroke:var(--oxide)}
+.cascade svg .elbl rect{fill:#fff;stroke:rgba(0,0,0,.06);stroke-width:.5;filter:drop-shadow(0 1px 3px rgba(0,0,0,.08))}
+.cascade svg .elbl text{font:600 10px var(--mono);fill:var(--ink-soft);font-variant-numeric:tabular-nums}
+.cascade svg .elbl.miss text{fill:var(--oxide-ink)}
+/* nodes lift towards the pointer, springing back with a small overshoot */
+.cascade svg .node{transition:opacity .25s var(--apple),transform .35s var(--bounce);cursor:pointer;transform-box:fill-box;transform-origin:center}
+.cascade svg .node:hover{transform:translateY(-1.5px)}
+.cascade svg .node:active{transform:scale(.98)}
+.cascade svg .node:focus{outline:none}
+.cascade svg .node:focus-visible rect.box{stroke:var(--statute);stroke-width:2.4}
+.cascade svg .missing rect.box{stroke-dasharray:5 3;stroke-width:1.4}
+/* highlighting: the path in focus glows in its status colour and a current flows along it; everything else recedes */
+.cascade .focusing .edge.dim{opacity:.14}
+.cascade .focusing .node.dim{opacity:.28}
+.cascade .focusing .port,.cascade .focusing .elbl{opacity:.35}
+.cascade svg .edge.hot{opacity:1;stroke-width:2.4;stroke-dasharray:7 7;animation:cc-flow 1.1s linear infinite}
+@keyframes cc-flow{to{stroke-dashoffset:-28}}
+/* always on: small dots travel along every link from regulation to owner, so the direction of the chain reads at a glance.
+   The pattern is 30px long and each cycle moves it exactly one pattern, so the stream never jumps. */
+.cascade svg .flow{fill:none;stroke:var(--statute);stroke-width:2.6;stroke-linecap:round;stroke-dasharray:0.1 29.9;opacity:.55;pointer-events:none;animation:cc-travel 1.8s linear infinite;transition:opacity .25s var(--apple),stroke-width .25s var(--apple)}
+@keyframes cc-travel{to{stroke-dashoffset:-30}}
+.cascade svg .edge.to-miss + .flow{stroke:var(--oxide)}
+.cascade svg .edge.hot + .flow{opacity:1;stroke-width:3.4;animation-duration:1s}
+.cascade .focusing .edge.dim + .flow{opacity:.06}
+.cascade .mstage .flow{display:none}
+.cascade svg .node.doc.hot rect.box{stroke:#8E8E93;stroke-width:1.6}
+.cascade svg .node.hot rect.box{stroke-width:1.8;filter:drop-shadow(0 2px 4px rgba(0,0,0,.06)) drop-shadow(0 10px 22px rgba(30,40,80,.14))}
+.cascade svg .node.sel rect.box{stroke:var(--statute);stroke-width:2.2;stroke-opacity:1}
+.cascade svg .node:hover rect.box{filter:drop-shadow(0 2px 4px rgba(0,0,0,.06)) drop-shadow(0 12px 24px rgba(30,40,80,.14))}
+.cascade svg .node.doc:hover rect.box{stroke:#C7C7CC}
+/* entrance: lines draw themselves, boxes spring in one after another */
+.cascade .ripple .edge{stroke-dasharray:900;stroke-dashoffset:900;animation:cascade-draw 1.2s var(--spring) forwards}
+/* edges into a "missing" box are dashed, and do not take part in the ripple (it would overwrite the dash) */
+.cascade svg .edge.to-miss,.cascade .ripple .edge.to-miss{stroke-dasharray:3 4;stroke-dashoffset:0;animation:none}
+.cascade svg .edge.to-miss.hot{stroke-dasharray:4 5;animation:cc-flow 1.1s linear infinite}
+.cascade .ripple .node{animation:cascade-nodein .55s var(--bounce) backwards}
+.cascade .ripple .port,.cascade .ripple .elbl{animation:cc-fade .4s var(--apple) .6s backwards}
+/* the dots start once the lines have drawn themselves */
+.cascade .ripple .flow{animation:cc-fade .5s var(--apple) 1s backwards,cc-travel 1.8s linear infinite}
+@keyframes cascade-draw{to{stroke-dashoffset:0}}
+@keyframes cascade-nodein{from{opacity:0;transform:translateX(-8px) scale(.94)}to{opacity:1;transform:none}}
+@keyframes cc-fade{from{opacity:0}to{opacity:1}}
+@media (prefers-reduced-motion:reduce){
+  .cascade .ripple .edge,.cascade .ripple .node,.cascade svg .edge.hot,  .cascade svg .edge.hot{stroke-dasharray:none}
+  .cascade svg .flow{display:none}
+}
+.cascade .more{font-size:12px;color:var(--ink-faint);margin-top:8px}
+/* the summary table's "Showing 20 of N · Show more · Show all" row */
+
+/* ---- buttons, links: capsules that press in ---- */
+.cascade button.ghost{font:inherit;font-size:12px;font-weight:500;background:rgba(0,0,0,.05);border:0;border-radius:999px;padding:6px 12px;cursor:pointer;color:var(--ink-soft);display:inline-flex;align-items:center;gap:6px;
+  transition:background-color .2s var(--apple),transform .25s var(--bounce)}
+.cascade button.ghost:hover{background:rgba(0,0,0,.08);color:var(--ink)}
+.cascade button.ghost:active{transform:scale(.95)}
+.cascade button.ghost.sm{font-size:11.5px;padding:4px 10px;flex-shrink:0}
+.cascade button.primary{font:inherit;font-size:12.5px;font-weight:600;background:var(--statute);color:#fff;border:0;border-radius:999px;padding:8px 16px;cursor:pointer;
+  box-shadow:0 1px 2px rgba(0,113,227,.25);transition:background-color .2s var(--apple),transform .25s var(--bounce),box-shadow .25s var(--apple)}
+.cascade button.primary:hover{background:#0077ED;box-shadow:0 4px 14px rgba(0,113,227,.3)}
+.cascade button.primary:active{transform:scale(.96)}
+.cascade :focus-visible{outline:2px solid var(--statute);outline-offset:2px}
+.cascade .linkbtn{font:inherit;font-size:12.5px;font-weight:500;background:none;border:0;color:var(--statute);cursor:pointer;padding:4px 2px;text-decoration:none;transition:opacity .2s}
+.cascade .linkbtn:hover{text-decoration:underline;text-underline-offset:3px}
+.cascade .srclink{font-size:12.5px;font-weight:500;color:var(--statute);text-decoration:none}
+.cascade .srclink:hover{text-decoration:underline;text-underline-offset:3px}
+.cascade .mono{font-family:var(--mono);font-size:11.5px;color:var(--statute)}
+.cascade .sub{color:var(--ink-faint);font-size:12px}
+.cascade .red{color:var(--oxide-ink)}
+.cascade .doclink{font-family:var(--mono);font-size:11.5px;font-weight:500;color:var(--statute);background:var(--statute-soft);border:0;border-radius:999px;padding:2px 8px;margin:0 3px 3px 0;cursor:pointer;display:inline-block;
+  transition:background-color .2s var(--apple),transform .25s var(--bounce)}
+.cascade .doclink:hover{background:#DCEBFE}
+.cascade .doclink:active{transform:scale(.95)}
+.cascade .toast{position:fixed;bottom:24px;left:50%;transform:translate(-50%,12px) scale(.96);background:rgba(29,29,31,.86);-webkit-backdrop-filter:blur(20px);backdrop-filter:blur(20px);color:#fff;border-radius:999px;padding:10px 18px;font-size:12.5px;font-weight:500;
+  opacity:0;transition:opacity .3s var(--apple),transform .4s var(--bounce);pointer-events:none;z-index:70;box-shadow:0 10px 30px rgba(0,0,0,.2)}
+.cascade .toast.show{opacity:1;transform:translate(-50%,0) scale(1)}
+
+/* ---- filter bar: scope, then capsule chips ---- */
+.cascade .fbar{display:grid;gap:10px;padding:0 0 12px;margin-bottom:12px;border-bottom:.5px solid var(--hair)}
+.cascade .frow{display:flex;flex-wrap:wrap;align-items:center;gap:8px 10px}
+/* top line: what is in view on the left, the way out (clear, source) on the right */
+.cascade .ftop{justify-content:space-between}
+.cascade .fend{display:flex;align-items:center;gap:16px;margin-left:auto}
+.cascade .fend [hidden]{display:none}
+/* second line: the two chip groups side by side; a group wraps whole, never splitting from its label */
+.cascade .fchiprow{column-gap:18px}
+.cascade .ffield{display:flex;align-items:center;gap:10px;flex:0 1 420px;min-width:0}
+.cascade .flabel{font:600 10.5px var(--mono);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-faint);white-space:nowrap}
+.cascade .ffield select{flex:1;height:32px;padding:0 12px;border-radius:999px;background-color:rgba(0,0,0,.05);border-color:transparent}
+.cascade .fchips{display:flex;flex-wrap:wrap;gap:4px}
+.cascade .fgroup{display:flex;align-items:center;gap:8px;min-width:0}
+/* a document code picked in the plan, in the plan's blue */
+.cascade .fchip.qchip{--c:var(--statute);--ct:var(--statute)}
+/* --c is the status hue (dot, ring, tint); --ct is its darker ink for text (AA) */
+.cascade .fchip{display:inline-flex;align-items:center;gap:4px;font:inherit;font-size:12px;font-weight:500;border:0;background:rgba(0,0,0,.045);color:var(--ink-soft);border-radius:999px;padding:3px 4px 3px 9px;cursor:pointer;
+  transition:background-color .2s var(--apple),box-shadow .25s var(--spring),transform .3s var(--bounce),color .2s var(--apple)}
+.cascade .fchip i{width:8px;height:8px;border-radius:50%;background:var(--c);transition:transform .3s var(--bounce)}
+.cascade .fchip span{font:600 11px var(--mono);background:#fff;color:var(--ink-soft);border-radius:999px;padding:1px 6px;font-variant-numeric:tabular-nums;box-shadow:0 0 0 .5px rgba(0,0,0,.05)}
+.cascade .fchip:hover{background:rgba(0,0,0,.075)}
+.cascade .fchip:hover i{transform:scale(1.25)}
+.cascade .fchip:active{transform:scale(.95)}
+.cascade .fchip[aria-pressed="true"]{background:color-mix(in srgb,var(--c) 12%,#fff);color:var(--ct,var(--c));
+  box-shadow:0 0 0 1px color-mix(in srgb,var(--c) 40%,transparent),0 2px 8px color-mix(in srgb,var(--c) 18%,transparent)}
+.cascade .fchip[aria-pressed="true"] span{background:#fff;color:var(--ct,var(--c))}
+.cascade .fchip.s-GAP{--c:var(--oxide);--ct:var(--oxide-ink)} .cascade .fchip.s-PARTIAL{--c:var(--amber);--ct:var(--amber-ink)}
+.cascade .fchip.s-NOT_COVERED{--c:var(--nc);--ct:var(--nc-ink)} .cascade .fchip.s-MET{--c:var(--verdigris);--ct:var(--verdigris-ink)}
+.cascade .fchip.r-Critical{--c:#FF3B30;--ct:var(--oxide-ink)} .cascade .fchip.r-High{--c:#FF6A00;--ct:var(--nc-ink)}
+.cascade .fchip.r-Medium{--c:#FF9F0A;--ct:var(--amber-ink)} .cascade .fchip.r-Low{--c:#8E8E93;--ct:#515154}
+
+/* ---- treatment plan (beside / under the canvas) ---- */
+/* the plan: three cards side by side at one height; a longer list scrolls inside its card,
+   its heading staying in view */
+.cascade .dossier{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px;align-items:stretch}
+@media (max-width:1279px){ .cascade .dossier{grid-template-columns:repeat(2,minmax(0,1fr))} }
+.cascade .dossier > *{position:relative;height:232px;min-width:0;overflow-y:auto;overscroll-behavior:contain;align-content:start;scrollbar-width:thin}
+/* the owner list drifts (renderCascade: mqTick); a soft fade at its foot shows there is more */
+.cascade .dossier .owners{-webkit-mask-image:linear-gradient(180deg,#000 calc(100% - 28px),transparent);mask-image:linear-gradient(180deg,#000 calc(100% - 28px),transparent)}
+.cascade .dossier .owners .mq-copy{margin-top:0}
+.cascade .dossier .step > h4{position:sticky;top:-14px;z-index:1;margin:-14px -18px 0;padding:14px 18px 8px;background:var(--panel)}
+@media (max-width:900px){ .cascade .dossier{grid-template-columns:minmax(0,1fr)} .cascade .dossier > *{height:auto;max-height:232px} }
+.cascade .dossier .head,.cascade .step{padding:14px 18px}
+.cascade .dossier h3{font-size:15px;font-weight:600;margin:0 0 3px;letter-spacing:-.014em}
+.cascade .dossier .by{font-size:11.5px;color:var(--ink-faint)}
+.cascade .step{display:grid;gap:6px;transition:transform .35s var(--bounce),box-shadow .35s var(--spring)}
+.cascade .step:hover{transform:translateY(-1px);box-shadow:var(--lift-shadow)}
+.cascade .step h4{font-size:13.5px;font-weight:600;margin:0}
+.cascade .step p{margin:0;font-size:12.8px;color:var(--ink-soft)}
+.cascade .sevtags{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.cascade table.worktable{min-width:0;width:100%;border-collapse:collapse}
+.cascade table.worktable td{border-bottom:.5px solid var(--hair);padding:8px 4px;font-size:13px;vertical-align:middle}
+.cascade table.worktable tr:last-child td{border-bottom:0}
+.cascade table.worktable tr{cursor:default} .cascade table.worktable tr:hover td{background:none}
+.cascade .worktable .wn{width:34px} .cascade .worktable .wc{text-align:right;font-weight:600;font-size:16px;font-variant-numeric:tabular-nums;width:56px;color:var(--ink);letter-spacing:-.02em}
+.cascade .stepic{display:inline-grid;place-items:center;width:26px;height:26px;border-radius:8px;background:var(--statute-soft);color:var(--statute)}
+.cascade .ownrow{display:flex;align-items:center;gap:8px;min-width:0}
+.cascade .ownic{display:inline-grid;place-items:center;width:24px;height:24px;border-radius:50%;background:var(--hair-soft);color:var(--ink-faint);flex-shrink:0}
+.cascade .ownic.none{background:var(--oxide-soft);color:var(--oxide)}
+.cascade .ownname{display:grid;gap:3px;min-width:0;flex:1}
+.cascade .ownbar{display:block;height:4px;border-radius:2px;background:var(--hair-soft);overflow:hidden}
+.cascade .ownbar i{display:block;height:100%;border-radius:2px;background:linear-gradient(90deg,#3A9BF7,#0071E3);transform-origin:left;animation:cc-grow .8s var(--spring) .2s backwards}
+@keyframes cc-grow{from{transform:scaleX(0)}to{transform:none}}
+
+/* ---- requirement summary table ---- */
+.cascade h2{font-size:17px;font-weight:600;margin:6px 0 0;display:flex;align-items:center;gap:10px;letter-spacing:-.02em}
+.cascade .h2ic{display:inline-grid;place-items:center;width:30px;height:30px;border-radius:9px;background:var(--statute);color:#fff;box-shadow:0 2px 6px rgba(0,113,227,.3)}
+.cascade .tablewrap{overflow-x:auto}
+/* ---- requirement summary: one card — title and status chips, a paged table, a footer ---- */
+.cascade .tcard{overflow:hidden}
+.cascade .tchead{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;padding:14px 18px;border-bottom:.5px solid var(--hair)}
+.cascade .tchead h2{margin:0;font-size:15px}
+.cascade .tchead .h2ic{width:28px;height:28px;border-radius:8px}
+.cascade .tcount{font-size:12.5px;font-weight:500;color:var(--ink-faint);font-variant-numeric:tabular-nums;letter-spacing:0}
+.cascade table.sumtable{min-width:900px;table-layout:fixed}
+.cascade .sumtable th{font-family:inherit;font-size:12px;font-weight:600;line-height:1.3;color:var(--ink-soft);background:#FAFAFC;padding:11px 12px;white-space:nowrap}
+.cascade .sumtable td{padding:12px;vertical-align:middle;font-size:12.5px}
+.cascade .sumtable .tn{width:48px;text-align:center;color:var(--ink-faint);font-variant-numeric:tabular-nums}
+.cascade .sumtable .tsth{width:118px} .cascade .sumtable .trkh{width:96px} .cascade .sumtable .townh{width:220px}
+.cascade .sumtable th.tnum{width:96px} .cascade .sumtable .tgo{width:40px;color:var(--ink-faint);text-align:center}
+.cascade .sumtable tbody tr:hover .tgo{color:var(--statute)}
+.cascade .treq{display:flex;align-items:center;gap:12px;min-width:0}
+.cascade .tico{flex:none;display:grid;place-items:center;width:34px;height:34px;border-radius:10px;background:var(--stsoft);color:var(--st)}
+.cascade .ttext{min-width:0;flex:1}
+.cascade .ttitle{font-size:13px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cascade .tcode{font:600 11.5px var(--mono);color:var(--statute);margin-right:7px}
+.cascade .tsub{margin-top:2px;font-size:12px;color:var(--ink-faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cascade .tacts{margin-top:6px}
+.cascade .tacts .act{margin-bottom:0}
+.cascade .towner{display:flex;align-items:center;gap:9px;min-width:0}
+.cascade .tav{flex:none;display:grid;place-items:center;width:32px;height:32px;border-radius:50%;font:700 11px var(--mono);letter-spacing:.02em}
+.cascade .townt{display:grid;min-width:0}
+.cascade .townt b{font-size:12.5px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cascade .townt .sub{font-size:11.5px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cascade .tlinks{display:inline-flex;align-items:center;gap:5px;color:var(--statute);font-weight:600;font-variant-numeric:tabular-nums}
+.cascade .tempty{text-align:center;color:var(--ink-faint);padding:28px 12px}
+.cascade .tfoot{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:10px 16px;padding:12px 18px;border-top:.5px solid var(--hair)}
+.cascade .tfoot:empty{display:none}
+.cascade .tfright{display:flex;flex-wrap:wrap;align-items:center;gap:10px}
+.cascade .pager{display:flex;align-items:center;gap:4px}
+.cascade .pg{display:inline-grid;place-items:center;min-width:32px;height:32px;padding:0 8px;border:0;border-radius:9px;background:transparent;font:inherit;font-size:13px;color:var(--ink-soft);cursor:pointer;font-variant-numeric:tabular-nums;transition:background-color .2s var(--apple)}
+.cascade .pg:hover:not(:disabled){background:rgba(0,0,0,.05)}
+.cascade .pg.on{background:#fff;color:var(--statute);font-weight:600;box-shadow:0 0 0 1.5px var(--statute)}
+.cascade .pg:disabled{opacity:.35;cursor:default}
+.cascade .pgdots{padding:0 4px;color:var(--ink-faint)}
+.cascade .psize{height:32px;padding:0 10px;border-radius:9px}
+/* the 1280–1535px laptop: the owner column gives way to the requirement */
+@media (max-width:1535px){ .cascade .sumtable .townh{width:180px} .cascade .sumtable .tsth{width:108px} .cascade .sumtable th.tnum{width:84px} }
+.cascade table{border-collapse:collapse;width:100%;min-width:900px}
+.cascade th{font:600 11.5px var(--mono);color:var(--ink-faint);text-align:left;padding:12px 14px;border-bottom:.5px solid var(--hair);background:transparent;letter-spacing:0}
+.cascade td{padding:11px 14px;border-bottom:.5px solid var(--hair);font-size:12.5px;vertical-align:top}
+.cascade tbody tr{cursor:pointer;transition:background-color .2s var(--apple)} .cascade tbody tr:hover td{background:rgba(0,113,227,.035)}
+.cascade tbody tr:last-child td{border-bottom:0}
+.cascade tbody tr.selrow td{background:var(--statute-soft)}
+.cascade .act{display:inline-block;font-size:11px;font-weight:600;border-radius:999px;padding:3px 9px;margin:0 4px 4px 0;white-space:nowrap;background:var(--hair-soft);color:var(--ink-soft)}
+.cascade .act.a-own{background:var(--oxide-soft);color:var(--oxide-ink)}
+
+/* ---- right-side detail panel (frame classes come from the shared DRAWER spec) ---- */
+.cascade .ccdrawer .dbody > * + *{margin-top:16px}
+.cascade .ccdrawer h4{font-size:12px;font-weight:600;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.05em;margin:0 0 6px}
+.cascade .ccdrawer p{margin:0;font-size:13px;line-height:1.55}
+.cascade .ccdrawer ul.bul{margin:0;padding-left:18px;display:grid;gap:4px;list-style:disc;font-size:13px}
+.cascade .callout{display:flex;gap:10px;border:0;border-radius:14px;padding:12px 14px}
+.cascade .callout > svg{flex-shrink:0;margin-top:1px}
+.cascade .callout b{display:block;font-size:13.5px}
+.cascade .callout .cbody{margin-top:4px;color:var(--ink-soft);font-size:12.8px;display:grid;gap:4px}
+.cascade .c-red{background:var(--oxide-soft);color:var(--oxide-ink)}
+.cascade .c-orange{background:var(--nc-soft);color:var(--nc-ink)}
+.cascade .c-amber{background:var(--amber-soft);color:var(--amber-ink)}
+.cascade .c-green{background:var(--verdigris-soft);color:var(--verdigris-ink)}
+.cascade .c-slate{background:var(--hair-soft);color:var(--ink-soft)}
+.cascade .fgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px 14px;border:0;background:var(--bone);border-radius:14px;padding:12px 14px;margin:0}
+.cascade .fgrid dt{font-size:12px;color:var(--ink-faint)}
+.cascade .fgrid dd{margin:2px 0 0;font-size:13px;font-weight:500;color:var(--ink);min-width:0;overflow-wrap:anywhere}
+.cascade .flow{display:flex;align-items:flex-start;gap:2px}
+.cascade .fstep{flex:1;min-width:0;display:flex;flex-direction:column;align-items:center;gap:3px;text-align:center;animation:cc-step .45s var(--spring) backwards}
+.cascade .fstep:nth-child(3){animation-delay:.06s} .cascade .fstep:nth-child(5){animation-delay:.12s} .cascade .fstep:nth-child(7){animation-delay:.18s} .cascade .fstep:nth-child(9){animation-delay:.24s}
+.cascade .ftile{display:grid;place-items:center;width:36px;height:36px;border-radius:11px}
+.cascade .ftile.ok{background:var(--statute-soft);color:var(--statute)}
+.cascade .ftile.miss{background:var(--oxide-soft);color:var(--oxide);outline:1.5px dashed var(--oxide);outline-offset:-1.5px}
+.cascade .ftile.st{background:var(--k);color:var(--c)}
+.cascade .fl{font-size:11px;font-weight:600;color:var(--ink-soft);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cascade .fs{font-size:11px;color:var(--ink-faint);max-width:100%;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cascade .farr{color:#C7C7CC;margin-top:11px;flex-shrink:0}
+.cascade .quote{font:12.5px/1.6 var(--mono);background:var(--bone);border:0;border-radius:12px;padding:10px 12px;color:var(--ink-soft)}
+.cascade .loc{display:flex;align-items:center;gap:10px;border:0;background:var(--bone);border-radius:14px;padding:10px 12px}
+.cascade .loc.none{color:var(--ink-faint);font-size:12.5px}
+.cascade .locic{display:grid;place-items:center;width:32px;height:32px;border-radius:9px;background:#fff;box-shadow:0 0 0 .5px rgba(0,0,0,.06);color:var(--ink-faint);flex-shrink:0}
+.cascade .loctxt{min-width:0;flex:1}
+.cascade .lock{font-size:11px;font-weight:600;color:var(--ink-faint);text-transform:uppercase;letter-spacing:.05em}
+.cascade .locp{font-size:13px;font-weight:500;color:var(--ink);overflow-wrap:anywhere}
+.cascade .locp .sep{color:var(--ink-faint);margin:0 2px}
+.cascade .dlist{list-style:none;margin:0;padding:0;border:0;border-radius:14px;overflow:hidden;background:#fff;box-shadow:0 0 0 .5px rgba(0,0,0,.08)}
+.cascade .dlist li + li{border-top:.5px solid var(--hair)}
+.cascade .drow{display:flex;align-items:center;gap:10px;width:100%;text-align:left;font:inherit;background:#fff;border:0;padding:9px 12px;cursor:pointer;color:var(--ink);transition:background-color .2s var(--apple)}
+.cascade .drow.plain{cursor:default}
+.cascade button.drow:hover{background:#F9F9FB}
+.cascade button.drow:active{background:#F2F2F7}
+.cascade .drow-ic{display:grid;place-items:center;width:26px;height:26px;border-radius:8px;background:var(--statute-soft);color:var(--statute);flex-shrink:0}
+.cascade .drow-main{min-width:0;flex:1;display:grid;gap:1px}
+.cascade .drow-t{font-size:12.8px;line-height:1.4;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+.cascade .drow-t b{font-weight:600;color:var(--statute)}
+.cascade .drow-l{font-size:11.5px;color:var(--ink-faint);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;display:flex;align-items:center;gap:4px}
+.cascade .drow-k{font-size:11px;color:var(--ink-faint);flex-shrink:0}
+.cascade .sbar{width:4px;align-self:stretch;border-radius:2px;flex-shrink:0}
+.cascade .rbar{display:flex;height:10px;border-radius:999px;overflow:hidden;background:var(--hair-soft);margin:4px 0 8px}
+.cascade .rbar i{display:block;height:100%;transform-origin:left;animation:cc-grow .8s var(--spring) .15s backwards}
+.cascade .rlegend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12.5px;color:var(--ink-soft)}
+.cascade .rlegend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:-1px}
+.cascade ul.rlist{list-style:none;padding:0;margin:0;display:grid;gap:2px}
+.cascade .rlink{display:block;width:100%;text-align:left;font:inherit;font-size:13px;line-height:1.45;background:none;border:0;border-radius:10px;padding:7px 9px;cursor:pointer;color:var(--ink);transition:background-color .2s var(--apple)}
+.cascade .rlink:hover{background:var(--statute-soft)}
+/* guidebook interpretation + requirements under a selected obligation */
+.cascade .dhead{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-bottom:4px}
+.cascade .gbinterp{font-size:12.5px;color:var(--ink-soft)}
+.cascade .gbinterp summary{cursor:pointer;font-weight:600;color:var(--statute)}
+.cascade .gbinterp p{margin:6px 0 0;line-height:1.55}
+.cascade .gbreqs{display:grid;gap:8px}
+.cascade .gbreqs h5{font:600 12px var(--mono);color:var(--ink-faint);margin:0}
+.cascade .gbreq{border:0;border-left:3px solid var(--sev);border-radius:10px;padding:9px 11px;display:grid;gap:3px;background:var(--bone)}
+.cascade .gbreq p{margin:0;font-size:12.5px;line-height:1.45}
+
+/* ---- remediation chips: each action drafts its record with the local AI ---- */
+.cascade .act.actbtn{font:inherit;font-size:11px;font-weight:600;border:0;box-shadow:0 0 0 .5px rgba(0,0,0,.08);cursor:pointer;display:inline-flex;align-items:center;gap:5px;line-height:1.4;
+  transition:background-color .2s var(--apple),color .2s var(--apple),transform .25s var(--bounce),box-shadow .25s var(--apple)}
+.cascade .act.actbtn:hover{color:var(--statute);background:var(--statute-soft);box-shadow:0 0 0 1px rgba(0,113,227,.35)}
+.cascade .act.actbtn:active{transform:scale(.95)}
+.cascade .act.actbtn.ready{background:var(--statute-soft);color:var(--statute);box-shadow:0 0 0 1px rgba(0,113,227,.25)}
+.cascade .act.actbtn.saved{background:var(--verdigris-soft);color:var(--verdigris-ink);box-shadow:0 0 0 1px rgba(52,199,89,.35)}
+.cascade .act.actbtn.run{background:#fff;color:var(--ink-soft);box-shadow:0 0 0 1px dashed rgba(0,0,0,.15)}
+.cascade .act.actbtn.off{opacity:.5;cursor:not-allowed}
+.cascade .act.actbtn.off:hover{color:var(--ink-soft);background:var(--hair-soft);box-shadow:0 0 0 .5px rgba(0,0,0,.08)}
+.cascade .act.lg{font-size:12.5px;padding:7px 12px;border-radius:999px;margin:0 6px 6px 0}
+/* auditor view: ask the hospital for a duty's documents */
+.cascade .act.actbtn.a-req{display:flex;width:max-content;margin-top:4px;background:var(--nc-soft);color:var(--nc-ink);box-shadow:0 0 0 1px rgba(255,106,0,.3)}
+.cascade .act.actbtn.a-req:hover{background:#FFE6D3;color:#A34200}
+.cascade .act.reqd{display:block;width:max-content;margin-top:4px;background:var(--verdigris-soft);color:var(--verdigris-ink)}
+.cascade .acts{display:flex;flex-wrap:wrap}
+.cascade .spin{width:10px;height:10px;border-radius:50%;border:2px solid #D1D1D6;border-top-color:var(--statute);display:inline-block;animation:cc-spin .8s linear infinite}
+@keyframes cc-spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.cascade .spin{animation-duration:2.4s}}
+
+/* ---- AI drafting drawer (React, outside .cascade): indeterminate progress bar ---- */
+.rd-indet{position:relative;height:6px;border-radius:999px;background:#E5E5EA;overflow:hidden}
+.rd-indet::after{content:"";position:absolute;inset:0 auto 0 0;width:38%;border-radius:999px;background:linear-gradient(90deg,#8CC0FB,#0071E3);animation:rd-slide 1.4s ease-in-out infinite}
+@keyframes rd-slide{0%{transform:translateX(-100%)}100%{transform:translateX(270%)}}
+@media (prefers-reduced-motion:reduce){.rd-indet::after{animation-duration:4s}}
+
+/* phones: the minimap's picture would cover the lattice, so only the zoom controls stay */
+@media (max-width:640px){
+  .cascade .mmap{display:none}
+    }
+
+/* ---- full view: the canvas card fills the window (below the detail drawer, z 40/50) ---- */
+html.cc-lock{overflow:hidden}
+.cascade .ccfullback{position:fixed;inset:0;z-index:37;background:rgba(245,245,247,.78);-webkit-backdrop-filter:blur(16px) saturate(140%);backdrop-filter:blur(16px) saturate(140%)}
+.cascade .canvas.full{position:fixed;inset:12px;z-index:38;display:flex;flex-direction:column;border-radius:22px;
+  box-shadow:0 0 0 .5px rgba(0,0,0,.06),0 24px 60px -12px rgba(0,0,0,.22),0 60px 120px -40px rgba(0,0,0,.25)}
+.cascade .canvas.full .viewport{flex:1;height:auto!important;max-height:none;min-height:0}
+.cascade .fullbtn{display:inline-flex;align-items:center;gap:6px;height:30px;padding:0 12px;border:0;border-radius:999px;background:rgba(0,0,0,.05);
+  font:inherit;font-size:12.5px;font-weight:500;color:var(--ink);cursor:pointer;white-space:nowrap;
+  transition:background-color .2s var(--apple),color .2s var(--apple),transform .3s var(--bounce)}
+.cascade .fullbtn:hover{background:rgba(0,0,0,.08)}
+.cascade .fullbtn:active{transform:scale(.95)}
+.cascade .canvas.full .fullbtn{background:var(--statute);color:#fff}
+.cascade .canvas.full .fullbtn:hover{background:#0062C4}
+@media (prefers-reduced-motion:reduce){.cascade .fullbtn{transition:none}}
+
+/* ---- the regulation in numbers (CascadePage StatusPanel): outside .cascade, so unscoped ---- */
+.cc-stat:hover { background: color-mix(in srgb, var(--c, #0071e3) 5%, white); }
+.cc-stat-on { box-shadow: inset 0 0 0 2px #0071e3; background: #f5f9ff !important; }
+.cc-stat:focus-visible { outline: none; box-shadow: inset 0 0 0 2px rgba(0, 113, 227, 0.55); }
+.cc-bar { transform-origin: left; animation: cc-bar-grow 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; animation-delay: calc(var(--d, 0ms) + 0.2s); }
+@keyframes cc-bar-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+.cc-seg { animation: cc-seg-draw 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; animation-delay: calc(var(--d, 0ms) + 0.15s); }
+@keyframes cc-seg-draw { from { stroke-dasharray: 0 var(--len); } }
+@media (prefers-reduced-motion: reduce) { .cc-bar, .cc-seg { animation: none; } }
+
+/* action plan: the unmet by priority as one bar; each piece of work as a share of them */
+.cascade .dossier .sevbar{display:flex;gap:2px;height:8px;margin-top:12px;border-radius:999px;overflow:hidden;background:#f2f2f7}
+.cascade .dossier .sevbar i{display:block;height:100%;transform-origin:left;animation:cc-bar-grow .9s cubic-bezier(.2,.8,.2,1) backwards;animation-delay:calc(var(--d,0ms) + .2s)}
+.cascade .dossier .wbar{display:block;height:4px;margin-top:6px;border-radius:999px;background:#f2f2f7;overflow:hidden}
+.cascade .dossier .wbar i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#8cc0fb,#0071e3);transform-origin:left;animation:cc-bar-grow .9s cubic-bezier(.2,.8,.2,1) .25s backwards}
+@media (prefers-reduced-motion:reduce){.cascade .dossier .sevbar i,.cascade .dossier .wbar i,.cascade .tl li,.cascade .tl li::before,.cascade .tl .bar i{animation:none}}

@@ -1,0 +1,7 @@
+[Unit]
+Description=Restart the Company Brain API after a failed health probe
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/systemctl restart company-brain.service
+ExecStartPost=/usr/bin/logger -t company-brain-heal "API restarted after failed health probe"

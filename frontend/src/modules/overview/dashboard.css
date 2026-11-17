@@ -1,0 +1,72 @@
+/*
+ * Dashboard (DashboardPage.tsx): the "Top critical gaps" panel.
+ * --d is a row's stagger delay, --rc its risk colour, --sev the weight of its risk (bar width).
+ */
+
+/* the panel opens from the right: it slides in while its edge sweeps open */
+.dg-panel { animation: dg-in 0.65s cubic-bezier(0.2, 0.8, 0.2, 1) 0.12s backwards; }
+@keyframes dg-in {
+  from { opacity: 0; transform: translateX(28px); clip-path: inset(0 0 0 55% round 18px); }
+  to { opacity: 1; transform: none; clip-path: inset(0 0 0 0 round 18px); }
+}
+
+/* rows follow one after another */
+.dg-row { animation: dg-row 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; animation-delay: calc(var(--d, 0ms) + 0.3s); }
+@keyframes dg-row { from { opacity: 0; transform: translateX(18px); } to { opacity: 1; transform: none; } }
+
+.dg-btn {
+  position: relative; display: flex; align-items: flex-start; gap: 10px; width: 100%; text-align: left;
+  padding: 9px 10px 10px 8px; border-radius: 14px;
+  transition: background-color 0.2s ease, transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.3s ease;
+}
+/* an accent edge in the risk's colour grows in on hover */
+.dg-btn::before {
+  content: ''; position: absolute; left: 0; top: 10px; bottom: 10px; width: 3px; border-radius: 0 3px 3px 0;
+  background: var(--rc); transform: scaleY(0); transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.dg-btn:hover {
+  background: #fff; transform: translateX(-2px);
+  box-shadow: 0 0 0 0.5px rgba(0, 0, 0, 0.06), 0 10px 22px -12px color-mix(in srgb, var(--rc) 55%, transparent);
+}
+.dg-btn:hover::before { transform: scaleY(1); }
+.dg-btn:focus-visible { outline: none; box-shadow: 0 0 0 2px color-mix(in srgb, var(--rc) 60%, white); }
+
+.dg-rank { flex: none; width: 14px; padding-top: 8px; text-align: right; font-size: 11px; font-weight: 700; color: #a1a1a6; font-variant-numeric: tabular-nums; }
+
+/* how heavy the risk is: a bar that grows to its width */
+.dg-meter { display: block; height: 4px; margin-top: 7px; border-radius: 999px; background: #f2f2f7; overflow: hidden; }
+.dg-meter > i {
+  display: block; height: 100%; width: var(--sev, 25%); border-radius: inherit; transform-origin: left;
+  background: linear-gradient(90deg, color-mix(in srgb, var(--rc) 45%, white), var(--rc));
+  animation: dg-grow 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; animation-delay: calc(var(--d, 0ms) + 0.5s);
+}
+@keyframes dg-grow { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .dg-panel, .dg-row, .dg-meter > i { animation: none !important; }
+  .dg-btn, .dg-btn::before { transition: none; }
+}
+
+/* Regulation changes: pressing a change turns the whole card over (3D) to that
+   regulation's impact; Back or Esc turns it again. Both faces are the card. */
+.rc-flip { perspective: 1600px; }
+.rc-inner { transform-style: preserve-3d; transition: transform 0.75s cubic-bezier(0.2, 0.8, 0.2, 1); }
+.rc-flip.is-flipped .rc-inner { transform: rotateY(180deg); }
+.rc-face { -webkit-backface-visibility: hidden; backface-visibility: hidden; }
+.rc-back { transform: rotateY(180deg); }
+/* the back draws in once it faces the reader */
+.rc-flip.is-flipped .rc-ring { animation: rc-ring 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) 0.35s backwards; }
+@keyframes rc-ring { from { stroke-dasharray: 0 var(--len); } }
+.rc-flip.is-flipped .rc-bar { transform-origin: left; animation: rc-bar 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; animation-delay: var(--d, 0ms); }
+@keyframes rc-bar { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@media (prefers-reduced-motion: reduce) {
+  .rc-inner { transition: none; }
+  .rc-flip.is-flipped .rc-ring, .rc-flip.is-flipped .rc-bar { animation: none; }
+}
+
+/* the "applies to you" cards: tinted and edged in their impact colour (--rc) */
+.rc-tcard {
+  border-color: color-mix(in srgb, var(--rc) 22%, #e5e7eb);
+  background: linear-gradient(100deg, color-mix(in srgb, var(--rc) 9%, white), #fff 62%);
+  box-shadow: inset 4px 0 0 var(--rc), 0 6px 16px -12px color-mix(in srgb, var(--rc) 70%, transparent);
+}

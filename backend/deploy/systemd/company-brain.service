@@ -1,0 +1,37 @@
+[Unit]
+Description=Company Brain API
+Documentation=file:///srv/company-brain/DEPLOY.md
+After=network-online.target postgresql.service
+Wants=network-online.target
+Requires=postgresql.service
+
+[Service]
+Type=exec
+User=brain
+Group=brain
+WorkingDirectory=/srv/company-brain/scraper
+EnvironmentFile=/etc/company-brain/env
+# Single worker on purpose. uvicorn's multiprocess supervisor pings each
+# worker with a 5 s timeout and kills whatever does not answer. This host
+# gives the guest ~6% of a CPU, so a worker inside a normal 12 s query
+# cannot answer in time and was being killed mid-request — 9 deaths in
+# 10 minutes, surfacing to users as HTTP 502 on long uploads. One worker
+# runs without that supervisor. There is no spare CPU for a second one.
+ExecStart=/srv/company-brain/.venv/bin/uvicorn regulatory_ingestion.api:app \
+          --host 127.0.0.1 --port 8787 --workers 1
+Restart=always
+RestartSec=5
+TimeoutStopSec=30
+
+# 127.0.0.1 above is deliberate: nginx is the only thing that should reach it.
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=full
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+# extraction and OCR write here
+ReadWritePaths=/srv/company-brain/scraper/output
+
+[Install]
+WantedBy=multi-user.target

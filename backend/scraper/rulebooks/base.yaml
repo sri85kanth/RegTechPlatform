@@ -1,0 +1,247 @@
+# The base risk rulebook — every sector extends it.
+#
+# Rules decide, AI explains: every score in a risk assessment comes from a rule
+# below, named by its id in the derivation. Nothing here is code: conditions are
+# structured predicates ({path: test}) that regulatory_ingestion/risk/predicates.py
+# evaluates, and a change to this file is a new version, pinned by hash on every
+# assessment it produces (design §5, scraper/docs/risk-module-design.md).
+#
+# Fact paths a rule may read are assembled per exposure:
+#   penalty.*        from penalty_provisions (statutory ceilings, verbatim basis)
+#   consequence      list: licence_suspension, licence_cancellation, accreditation_withdrawal
+#   instrument_type  act / rules / regulation / standard / guideline
+#   regulator.*      inspection_frequency, publishes_enforcement
+#   theme.*          from the theme catalogue below (and the sector pack)
+#   exposure.*       sites, scale_index, guards_licence
+#   history.*        status (records | attested), counts on the theme
+#   node.*           the graph node a library template binds to
+#   template.*       a library template's seeds
+#   profile.*        turnover_inr, …
+#   requirement.*, evidence.*  change velocity
+#
+# A rule with applies_to runs only for those exposure kinds (obligation, template,
+# event): a penalty fact means nothing for a library template, a graph node's
+# criticality nothing for an obligation, and neither is "unknown" there.
+# A default marked assumed: true costs confidence; any other default is the
+# baseline reached when every rule above it was checked and none holds.
+
+rulebook: base
+version: 1.0.0
+status: draft                     # draft → published (gate G8) → retired
+uncalibrated: false
+
+bands: [LOW, MEDIUM, HIGH, CRITICAL]
+
+# Band = lookup, not a product threshold. Rows: impact 5 → 1. Columns: likelihood 1 → 5.
+# A client may set its own matrix at gate G1 (decision D2); this is the default.
+matrix:
+  5: [HIGH,   HIGH,   CRITICAL, CRITICAL, CRITICAL]
+  4: [MEDIUM, HIGH,   HIGH,     CRITICAL, CRITICAL]
+  3: [LOW,    MEDIUM, MEDIUM,   HIGH,     HIGH]
+  2: [LOW,    LOW,    MEDIUM,   MEDIUM,   HIGH]
+  1: [LOW,    LOW,    LOW,      MEDIUM,   MEDIUM]
+
+impact:
+  aggregate: max                  # the worst credible consequence; averaging would hide a 5
+  # tie order when two dimensions share the maximum (decides the appetite category)
+  order: [safety, regulatory, data, operational, financial, reputational]
+  dimensions:
+    regulatory:
+      rules:                      # first true rule wins
+        - {id: REG-IMP-01, applies_to: [obligation], when: {penalty.imprisonment: true}, score: 5}
+        - {id: REG-IMP-02, applies_to: [obligation], when: {consequence: {any_of: [licence_cancellation, licence_suspension, accreditation_withdrawal]}}, score: 5}
+        - {id: REG-IMP-03, applies_to: [obligation], when: {penalty.max_fine_inr: {gte: 10000000}}, score: 4}    # ≥ ₹1 crore
+        - {id: REG-IMP-04, applies_to: [obligation], when: {penalty.max_fine_inr: {gte: 1000000}}, score: 3}     # ≥ ₹10 lakh
+        - {id: REG-IMP-05, applies_to: [obligation], when: {penalty.present: true}, score: 2}
+        - {id: REG-IMP-TPL, applies_to: [template], when: {template.seeds.regulatory: {present: true}}, score_from: template.seeds.regulatory}
+      default:                    # no penalty clause found: an assumption, so it costs confidence
+        by: instrument_type
+        values: {act: 3, rules: 3, regulation: 3, standard: 2, guideline: 1}
+        otherwise: 3
+        assumed: true
+    safety:
+      not_applicable_when: {theme.safety_class: none}
+      rules:
+        - {id: SAF-IMP-01, when: {theme.safety_class: catastrophic}, score: 5}
+        - {id: SAF-IMP-02, when: {theme.safety_class: major}, score: 4}
+        - {id: SAF-IMP-03, when: {theme.safety_class: moderate}, score: 3}
+        - {id: SAF-IMP-04, when: {theme.safety_class: minor}, score: 2}
+      default: {score: 3, assumed: true}
+    operational:
+      rules:
+        - {id: OPS-IMP-01, applies_to: [obligation], when: {exposure.guards_licence: true}, score: 5}
+        - {id: OPS-IMP-02, when: {theme.critical_process: true}, score: 4}
+        - {id: OPS-IMP-03, applies_to: [template], when: {node.criticality: Critical}, score: 5}
+        - {id: OPS-IMP-04, applies_to: [template], when: {node.criticality: High}, score: 4}
+        - {id: OPS-IMP-TPL, applies_to: [template], when: {template.seeds.operational: {present: true}}, score_from: template.seeds.operational}
+      default: {score: 2}         # baseline: no aggravating condition holds
+    financial:
+      rules:
+        - {id: FIN-IMP-01, applies_to: [obligation], when: {ratio: {num: penalty.max_fine_inr, den: profile.turnover_inr, gte: 0.01}}, score: 4}
+        - {id: FIN-IMP-02, applies_to: [obligation], when: {ratio: {num: penalty.max_fine_inr, den: profile.turnover_inr, gte: 0.001}}, score: 3}
+        - {id: FIN-IMP-TPL, applies_to: [template], when: {template.seeds.financial: {present: true}}, score_from: template.seeds.financial}
+      default: {score: 2}
+    reputational:
+      rules:
+        - {id: REP-IMP-01, applies_to: [obligation], when: {regulator.publishes_enforcement: true}, score: 4}
+        - {id: REP-IMP-02, applies_to: [obligation], when: {consequence: {any_of: [accreditation_withdrawal]}}, score: 4}
+        - {id: REP-IMP-TPL, applies_to: [template], when: {template.seeds.reputational: {present: true}}, score_from: template.seeds.reputational}
+      default: {score: 2}
+
+likelihood:
+  base:
+    from: regulator.inspection_frequency
+    map: {continuous: 4, annual: 3, biennial: 2, rare: 1}
+    fallback:                     # a library template has no inspecting regulator
+      from: template.base_likelihood
+      map: {frequent: 4, occasional: 3, rare: 2}
+    default: 3                    # neither is known: an assumption, so it costs confidence
+  modifiers:                      # summed, then clamped to 1..5
+    - {id: LIK-EXP-01, when: {exposure.sites: {gte: 3}}, add: 1}
+    - {id: LIK-EXP-02, when: {exposure.scale_index: high}, add: 1}
+    - {id: LIK-HIS-01, when: {history.open_observations_theme_24m: {gte: 1}}, add: 1}
+    - {id: LIK-HIS-02, when: {history.serious_36m: {gte: 1}}, add: 2}     # repeat observation, warning letter, penalty, licence action
+    - {id: LIK-HIS-03, when: {history.overdue_capa_theme: {gte: 1}}, add: 1}
+    - {id: LIK-HIS-04, when: {history.clean_inspection_theme_24m: true}, add: -1}
+    - {id: LIK-CHG-01, applies_to: [obligation], when: {all: [{requirement.section_changed_12m: true}, {evidence.predates_change: true}]}, add: 1}
+  # missing → INSUFFICIENT_EVIDENCE. "No history collected" is not "no history":
+  # history.status is records or a signed attestation, never assumed.
+  mandatory: [history.status, exposure.sites, exposure.scale_index]
+
+controls:
+  grades: [UNKNOWN, ABSENT, CLAIMED, DOCUMENTED, TESTED]
+  # what the requirement-level gap review found caps the grade …
+  cap_by_gap_status: {GAP: ABSENT, NOT_COVERED: ABSENT, PARTIAL: DOCUMENTED}
+  # … and, when no control is mapped at all, implies one
+  implied_by_gap_status: {MET: DOCUMENTED, PARTIAL: CLAIMED, GAP: ABSENT, NOT_COVERED: ABSENT}
+  # age of the newest evidence ÷ the control's expected interval
+  freshness: [{over: 3.0, drop: 2}, {over: 1.5, drop: 1}]
+  expected_interval_days: {continuous: 30, daily: 30, weekly: 30, monthly: 45, quarterly: 120, half_yearly: 210, annual: 400}
+  document_review_days: 400       # a DOCUMENTED grade decays against its document's review date
+  residual_effect:
+    TESTED:     {likelihood: -2, impact_if_corrective: -1}
+    DOCUMENTED: {likelihood: -1}
+    CLAIMED:    {likelihood: 0}
+    ABSENT:     {likelihood: 0}
+  max_reduction: {likelihood: 2, impact: 1}
+  floors: {likelihood: 1, impact: 1}
+
+confidence:
+  start: 100
+  penalties:                      # [each, cap]
+    mandatory_missing: [25, 60]   # per distinct mandatory input missing: a provisional score is never "High"
+    default_used: [10, 40]
+    precaution_used: [5, 20]      # an optional fact was unknown, so its worse value was used
+    fact_unconfirmed: [5, 25]
+    gap_status_unreviewed: [10, 10]
+    applicability_conditional: [15, 15]
+    evidence_claimed_only: [15, 15]
+    pack_uncalibrated: [10, 10]
+    template_seed_unreviewed: [10, 10]
+    exposures_pending_review: [5, 5]
+  bands: {HIGH: 75, MEDIUM: 50}
+
+# The evaluation ladder (design §4.8), first match wins. The order is data;
+# each id is implemented by name in the engine.
+evaluation:
+  - {id: EV-01, verdict: REVIEW_REQUIRED, when: no exposure has resolved applicability, or interpretation is flagged ambiguous}
+  - {id: EV-02, verdict: INSUFFICIENT_EVIDENCE, when: a mandatory input is missing and the known part is not already beyond tolerance}
+  - {id: EV-03, verdict: REVIEW_REQUIRED, when: the client's appetite is not approved}
+  - {id: EV-04, verdict: ESCALATE, when: residual band above tolerance, or above appetite in a zero-tolerance category}
+  - {id: EV-05, verdict: TREAT, when: residual band above appetite}
+  - {id: EV-06, verdict: REVIEW_REQUIRED, when: confidence below the client's threshold}
+  - {id: EV-07, verdict: WITHIN_APPETITE, when: otherwise}
+
+# Cross-sector themes, used by library templates. category = the appetite
+# category; without one, the dimension that drives impact decides.
+themes:
+  - {id: CYBER,  name: IT and cyber security,      safety_class: none}
+  - {id: DATA,   name: Data protection and privacy, safety_class: none, category: data}
+  - {id: PEOPLE, name: People and HR,              safety_class: none}
+  - {id: FIN,    name: Finance and reporting,      safety_class: none, category: financial}
+  - {id: LEGAL,  name: Legal and compliance,       safety_class: none, category: regulatory}
+  - {id: THIRD,  name: Third parties and supply,   safety_class: none}
+  - {id: BCP,    name: Business continuity,        safety_class: none}
+  - {id: FAC,    name: Facilities and workplace safety, safety_class: moderate, category: safety}
+  - {id: ESG,    name: ESG and sustainability,     safety_class: none, category: reputational}
+  - {id: CUST,   name: Customers and markets,      safety_class: none}
+  - {id: OPS,    name: Operations and engineering, safety_class: none}
+  - {id: GOV,    name: Governance and strategy,    safety_class: none}
+
+# Which theme an obligation belongs to, for every organisation (first match wins).
+# A sector pack's own mapping is tried before these (it is prepended on merge).
+# Keys: regulator (exact short name, case-insensitive), title_matches (substring,
+# case-insensitive), nabh_chapter. Specific titles first, regulator fallbacks last.
+# A regulation that matches nothing waits for a person to choose its theme (G3).
+theme_mapping:
+  # data and cyber
+  - {title_matches: "digital personal data", theme: DATA}
+  - {title_matches: "personal data", theme: DATA}
+  - {title_matches: "privacy", theme: DATA}
+  - {title_matches: "information technology", theme: CYBER}
+  - {title_matches: "cyber security", theme: CYBER}
+  - {title_matches: "cybersecurity", theme: CYBER}
+  - {regulator: CERT-IN, theme: CYBER}
+  # people and workplace
+  - {title_matches: "occupational safety", theme: FAC}
+  - {title_matches: "factories", theme: FAC}
+  - {title_matches: "fire", theme: FAC}
+  - {title_matches: "boiler", theme: FAC}
+  - {title_matches: "electricity", theme: FAC}
+  - {title_matches: "wages", theme: PEOPLE}
+  - {title_matches: "social security", theme: PEOPLE}
+  - {title_matches: "industrial relations", theme: PEOPLE}
+  - {title_matches: "provident fund", theme: PEOPLE}
+  - {title_matches: "state insurance", theme: PEOPLE}
+  - {title_matches: "sexual harassment", theme: PEOPLE}
+  - {title_matches: "gratuity", theme: PEOPLE}
+  - {title_matches: "bonus", theme: PEOPLE}
+  - {title_matches: "maternity", theme: PEOPLE}
+  - {title_matches: "contract labour", theme: PEOPLE}
+  - {title_matches: "shops and establishments", theme: PEOPLE}
+  - {title_matches: "apprentice", theme: PEOPLE}
+  - {regulator: EPFO, theme: PEOPLE}
+  - {regulator: ESIC, theme: PEOPLE}
+  # money, governance, customers
+  - {title_matches: "goods and services tax", theme: FIN}
+  - {title_matches: "income-tax", theme: FIN}
+  - {title_matches: "income tax", theme: FIN}
+  - {title_matches: "accounting standard", theme: FIN}
+  - {title_matches: "fraud", theme: FIN}
+  - {regulator: CBIC, theme: FIN}
+  - {regulator: CBDT, theme: FIN}
+  - {title_matches: "companies act", theme: GOV}
+  - {title_matches: "listing obligations", theme: GOV}
+  - {title_matches: "insider trading", theme: GOV}
+  - {title_matches: "corporate governance", theme: GOV}
+  - {regulator: MCA, theme: GOV}
+  - {title_matches: "consumer protection", theme: CUST}
+  - {title_matches: "legal metrology", theme: CUST}
+  - {title_matches: "advertis", theme: CUST}
+  - {title_matches: "outsourcing", theme: THIRD}
+  - {title_matches: "business continuity", theme: BCP}
+  # environment
+  - {title_matches: "environment", theme: ESG}
+  - {title_matches: "pollution", theme: ESG}
+  - {title_matches: "hazardous", theme: ESG}
+  - {title_matches: "plastic waste", theme: ESG}
+  - {title_matches: "e-waste", theme: ESG}
+  - {title_matches: "producer responsibility", theme: ESG}
+  - {regulator: CPCB, theme: ESG}
+  - {regulator: SPCB, theme: ESG}
+  - {regulator: MOEFCC, theme: ESG}
+  # law and the financial-sector regulators, last
+  - {title_matches: "money laundering", theme: LEGAL}
+  - {title_matches: "know your customer", theme: LEGAL}
+  - {title_matches: "foreign exchange", theme: LEGAL}
+  - {title_matches: "customs", theme: LEGAL}
+  - {title_matches: "competition", theme: LEGAL}
+  - {title_matches: "corruption", theme: LEGAL}
+  - {title_matches: "contract act", theme: LEGAL}
+  - {title_matches: "arbitration", theme: LEGAL}
+  - {regulator: SEBI, theme: GOV}
+  - {regulator: RBI, theme: LEGAL}
+  - {regulator: IRDAI, theme: LEGAL}
+inspection_frequency: {}          # sector packs; seed values, to calibrate
+scale_index: {}                   # sector packs: {high: {…}, medium: {…}}, else low
+nabh_category_floor: {}

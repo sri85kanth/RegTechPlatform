@@ -1,0 +1,94 @@
+/* The premium kit's motion — CSS only, fill-mode backwards, off under reduced motion. */
+
+.pm-glow { box-shadow: 0 10px 22px -10px var(--pm-glow, rgba(0, 113, 227, 0.45)); transition: transform 0.35s var(--spring); }
+.liquid:hover .pm-glow { transform: translateY(-1px) rotate(-4deg) scale(1.05); }
+
+/* KPI tiles rise one after another; the pressed one wears its colour */
+.pm-tile { animation: pm-rise 0.55s var(--spring) backwards; }
+.pm-tile-wash { position: absolute; inset: 0; pointer-events: none; }
+.pm-tile.pm-active { box-shadow: 0 0 0 2px var(--pm-ring), 0 18px 40px -22px var(--pm-ring); }
+@keyframes pm-rise { from { opacity: 0; transform: translateY(12px) scale(0.98); } }
+
+.pm-bar { transition: width 1.1s var(--spring); }
+.pm-arc { transition: stroke-dashoffset 1.2s var(--spring), stroke-dasharray 1.2s var(--spring), opacity 0.3s var(--apple); }
+
+/* something that has just changed state pops in, a little overshoot */
+.pm-pop { animation: pm-pop 0.45s cubic-bezier(0.34, 1.56, 0.64, 1) backwards; }
+@keyframes pm-pop { from { opacity: 0; transform: scale(0.4); } }
+
+/* bars and segments grow from the left */
+.pm-grow { transform-origin: left; animation: pm-grow 0.9s var(--spring) backwards; }
+@keyframes pm-grow { from { transform: scaleX(0); } }
+
+/* the insight card: soft colour drifting behind one plain sentence */
+.pm-insight { animation: pm-rise 0.55s var(--spring) backwards; }
+.pm-blob { position: absolute; width: 300px; height: 300px; border-radius: 999px; filter: blur(60px); opacity: 0.22; pointer-events: none;
+  animation: pm-drift 16s ease-in-out infinite alternate; }
+.pm-blob-2 { width: 240px; height: 240px; opacity: 0.16; animation-duration: 20s; animation-direction: alternate-reverse; }
+@keyframes pm-drift { to { transform: translate(-50px, 30px) scale(1.15); } }
+.pm-chip { transition: transform 0.25s var(--spring), box-shadow 0.25s var(--apple); }
+.pm-chip:hover { transform: translateY(-1px); box-shadow: 0 8px 18px -10px rgba(0, 0, 0, 0.3); }
+.pm-chip:active { transform: scale(0.96); }
+
+.pm-legend { transition: transform 0.25s var(--spring), background-color 0.2s var(--apple), box-shadow 0.25s var(--apple); }
+.pm-legend:not(:disabled):active { transform: scale(0.97); }
+
+/* lists arrive one item after another */
+.pm-stagger > * { animation: pm-rise 0.5s var(--spring) backwards; }
+.pm-stagger > *:nth-child(2) { animation-delay: 0.04s; }
+.pm-stagger > *:nth-child(3) { animation-delay: 0.08s; }
+.pm-stagger > *:nth-child(4) { animation-delay: 0.12s; }
+.pm-stagger > *:nth-child(5) { animation-delay: 0.16s; }
+.pm-stagger > *:nth-child(6) { animation-delay: 0.2s; }
+.pm-stagger > *:nth-child(7) { animation-delay: 0.24s; }
+.pm-stagger > *:nth-child(8) { animation-delay: 0.28s; }
+.pm-stagger > *:nth-child(n + 9) { animation-delay: 0.3s; }
+
+/* a row that can be opened: an accent edge that brightens on hover */
+.pm-row { position: relative; }
+.pm-row::before { content: ''; position: absolute; left: 0; top: 14px; bottom: 14px; width: 3px; border-radius: 0 3px 3px 0;
+  background: var(--pm-accent, transparent); opacity: 0.75; transition: opacity 0.2s var(--apple), top 0.3s var(--spring), bottom 0.3s var(--spring); }
+.pm-row:hover::before { opacity: 1; top: 8px; bottom: 8px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .pm-tile, .pm-pop, .pm-grow, .pm-insight, .pm-blob, .pm-stagger > * { animation: none !important; }
+  .pm-bar, .pm-arc, .pm-glow, .pm-chip, .pm-legend { transition: none !important; }
+}
+
+/* the explainer strip: steps rise in, a drop of light runs along each pipe */
+.pm-flow-step { animation: pm-rise 0.5s var(--spring) backwards; }
+.pm-pipe { position: relative; overflow: hidden; border-radius: 999px; background: rgba(0, 113, 227, 0.12); }
+.pm-pipe::after { content: ''; position: absolute; top: 0; bottom: 0; width: 45%; border-radius: 999px;
+  background: linear-gradient(90deg, transparent, rgba(0, 113, 227, 0.95), transparent); animation: pm-flowx 1.8s cubic-bezier(0.45, 0, 0.25, 1) infinite; }
+@keyframes pm-flowx { from { transform: translateX(-110%); } to { transform: translateX(230%); } }
+@media (prefers-reduced-motion: reduce) { .pm-flow-step, .pm-pipe::after { animation: none !important; } }
+
+/* something that opens in place (a list under a row): it drops in and fades up */
+.pm-open { animation: pm-open 0.38s var(--spring) backwards; }
+@keyframes pm-open { from { opacity: 0; transform: translateY(-6px); } }
+/* a filter chip: lifts on hover, gives under the finger, and the count pops when it changes */
+.pm-press { transition: transform 0.25s var(--spring), box-shadow 0.25s var(--apple), background-color 0.2s var(--apple), border-color 0.2s var(--apple), color 0.2s var(--apple); }
+.pm-press:hover { transform: translateY(-1px); box-shadow: 0 6px 16px -10px rgba(0, 0, 0, 0.35); }
+.pm-press:active { transform: scale(0.96); }
+.pm-press[aria-pressed='true'] .pm-dot { transform: scale(1.35); }
+.pm-dot { transition: transform 0.3s var(--spring); }
+@media (prefers-reduced-motion: reduce) {
+  .pm-open { animation: none !important; }
+  .pm-press, .pm-dot { transition: none !important; }
+}
+
+/* popups: a side sheet slides in on the iOS sheet curve, a centred dialog rises and settles, the dim fades */
+.pm-sheet { animation: pm-sheet 0.5s cubic-bezier(0.32, 0.72, 0, 1) backwards; }
+@keyframes pm-sheet { from { transform: translateX(calc(100% + 24px)); } }
+.pm-modal { animation: pm-modal 0.42s var(--spring) backwards; }
+@keyframes pm-modal { from { opacity: 0; transform: translateY(14px) scale(0.96); } }
+.pm-fade { animation: pm-fade 0.3s ease backwards; }
+@keyframes pm-fade { from { opacity: 0; } }
+@media (prefers-reduced-motion: reduce) { .pm-sheet, .pm-modal, .pm-fade { animation: none !important; } }
+
+/* a score ring draws itself on arrival; a bar grows in (charts.tsx ScoreRing, BarList) */
+.pm-ring-in { animation: pm-ring-in 1s cubic-bezier(0.2, 0.8, 0.2, 1) 0.1s backwards; }
+@keyframes pm-ring-in { from { stroke-dasharray: 0 var(--c); } }
+.pm-bar-in { transform-origin: left; animation: pm-bar-in 0.9s cubic-bezier(0.2, 0.8, 0.2, 1) backwards; animation-delay: calc(var(--d, 0ms) + 0.15s); }
+@keyframes pm-bar-in { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+@media (prefers-reduced-motion: reduce) { .pm-ring-in, .pm-bar-in { animation: none; } }

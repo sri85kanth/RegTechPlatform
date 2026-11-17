@@ -1,0 +1,5 @@
+# ColSmol visual retrieval for scanned Gazette pages. Needs poppler (pdftoppm).
+# Heaviest tier — skip it unless you are serving visual search.
+-r requirements-rag.txt
+colpali-engine==0.3.18
+pillow==12.3.0

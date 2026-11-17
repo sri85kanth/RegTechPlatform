@@ -1,0 +1,17 @@
+# Bind the UI and the MinIO console to loopback only, and publish NOTHING for
+# Redis and Postgres — they are internal to the compose network, and this host
+# already runs its own Redis (another app) and PostgreSQL 17 on those ports.
+# Every trace carries the company profile, named people and clause text — reach
+# the UI over an SSH tunnel:
+#   ssh -L 3000:127.0.0.1:3000 root@187.77.188.114   then open http://localhost:3000
+services:
+  langfuse-web:
+    ports: !override
+      - "127.0.0.1:3000:3000"
+  minio:
+    ports: !override
+      - "127.0.0.1:9090:9000"
+  redis:
+    ports: !override []
+  postgres:
+    ports: !override []

@@ -1,0 +1,76 @@
+# Healthcare sector pack. Extends the base rulebook: adds clinical themes, how
+# regulators, regulations and NABH chapters map to them, inspection frequencies,
+# the scale index and NABH category floors. It adds coverage; it never caps it —
+# library templates still apply to a hospital through its graph (design §14.2).
+#
+# Inspection frequencies are SEED values, to calibrate against real inspection
+# history (design §12, judgment call 10).
+
+rulebook: healthcare
+version: 1.0.0
+extends: base
+status: draft
+uncalibrated: false
+
+themes:
+  - {id: BMW,     name: Biomedical waste,               safety_class: major,        critical_process: true}
+  - {id: RAD,     name: Radiation safety,               safety_class: catastrophic}
+  - {id: FIRE,    name: Fire and life safety,           safety_class: catastrophic, category: safety}
+  - {id: BLOOD,   name: Blood bank and transfusion,     safety_class: catastrophic}
+  - {id: IPC,     name: Infection prevention and control, safety_class: major}
+  - {id: MED,     name: Medication and pharmacy,        safety_class: major}
+  - {id: CLIN,    name: Clinical care and patient safety, safety_class: major}
+  - {id: CONSENT, name: Patient rights and consent,     safety_class: moderate}
+  - {id: PCPNDT,  name: Prenatal diagnostics,           safety_class: moderate}
+  - {id: FOOD,    name: Food safety,                    safety_class: major}
+  - {id: LICENCE, name: Establishment licensing,        safety_class: none, category: regulatory}
+  - {id: LABOUR,  name: Labour and employment,          safety_class: minor, category: regulatory}
+  - {id: ENV,     name: Environmental consents,         safety_class: minor}
+
+# First match wins. Keys: regulator (exact, case-insensitive), title_matches
+# (substring, case-insensitive), nabh_chapter (exact).
+theme_mapping:
+  - {regulator: AERB, theme: RAD}
+  - {title_matches: "bio-medical waste", theme: BMW}
+  - {title_matches: "biomedical waste", theme: BMW}
+  - {title_matches: "fire", theme: FIRE}
+  - {title_matches: "blood", theme: BLOOD}
+  - {title_matches: "pre-natal diagnostic", theme: PCPNDT}
+  - {title_matches: "pcpndt", theme: PCPNDT}
+  - {title_matches: "clinical establishment", theme: LICENCE}
+  - {title_matches: "drugs and cosmetics", theme: MED}
+  - {title_matches: "narcotic", theme: MED}
+  - {title_matches: "digital personal data", theme: DATA}
+  - {regulator: FSSAI, theme: FOOD}
+  - {regulator: CPCB, theme: ENV}
+  - {nabh_chapter: HIC, theme: IPC}
+  - {nabh_chapter: MOM, theme: MED}
+  - {nabh_chapter: COP, theme: CLIN}
+  - {nabh_chapter: AAC, theme: CLIN}
+  - {nabh_chapter: PRE, theme: CONSENT}
+  - {nabh_chapter: FMS, theme: FIRE}
+  - {nabh_chapter: HRM, theme: PEOPLE}
+  - {nabh_chapter: IMS, theme: DATA}
+  - {title_matches: "wages", theme: LABOUR}
+  - {title_matches: "code on", theme: LABOUR}
+
+inspection_frequency:           # seed values
+  NABH: annual                  # surveillance assessment
+  AERB: biennial
+  CPCB: annual                  # SPCB consent and authorisation renewals
+  SPCB: annual
+  FSSAI: annual
+  FIRE: annual
+  ESIC: annual
+  EPFO: annual
+  MOHFW: rare
+  ICMR: rare
+  PCI: rare
+
+scale_index:                    # evaluated in order; neither → low
+  high: {beds: {gte: 200}}
+  medium: {beds: {gte: 50}}
+
+nabh_category_floor:            # the category nabh6_gap.py already reads
+  CORE: {safety: 4}
+  COMMITMENT: {safety: 3}

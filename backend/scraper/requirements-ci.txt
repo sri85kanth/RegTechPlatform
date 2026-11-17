@@ -1,0 +1,12 @@
+# The hermetic test layer only — what a runner with no database and no GPU
+# needs to execute `pytest scraper/tests` (DB-dependent tests skip themselves).
+pytest==9.1.1
+requests==2.34.2
+pypdf==6.15.0
+beautifulsoup4==4.15.0
+pydantic==2.13.4
+psycopg[binary]==3.3.4
+fastapi==0.141.1
+httpx==0.28.1
+PyYAML==6.0.3
+openpyxl==3.1.5

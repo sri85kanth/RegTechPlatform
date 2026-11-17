@@ -1,0 +1,18 @@
+# Core — the API and the ingestion pipeline run on these alone.
+# Versions are pinned to what the project venv is actually running.
+fastapi==0.141.1
+uvicorn==0.52.3
+# FastAPI needs this for multipart/form-data. Nothing imports it directly —
+# api_integrations.py:119 takes list[UploadFile], and FastAPI raises at
+# import time if it is absent, so the API will not boot without it.
+python-multipart==0.0.32
+psycopg[binary]==3.3.4      # v3, not psycopg2; pgdb.py is built on it
+pgvector==0.5.0
+python-dotenv==1.2.2
+cryptography==50.0.0        # Fernet, for the OAuth client secret at rest
+httpx==0.28.1
+requests==2.34.2
+pypdf==6.15.0
+beautifulsoup4==4.15.0
+PyYAML==6.0.3               # the risk rulebooks and library (scraper/rulebooks/*.yaml)
+openpyxl==3.1.5             # Excel in and out: control workbook (risk), remediation export, document intake
